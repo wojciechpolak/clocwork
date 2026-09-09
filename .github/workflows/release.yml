@@ -271,3 +271,18 @@ jobs:
       # and with immutable releases enabled its assets and tag are frozen.
       - name: Publish the complete release
         run: gh release edit "$TAG" --draft=false
+
+  # The formula points at release assets, so it cannot be written until those
+  # are downloadable. A pre-release tag never reaches the tap: `brew install`
+  # resolves to whatever the tap holds, and a candidate for a version is not
+  # that version. `.github/workflows/homebrew.yml` can be dispatched by hand to
+  # backfill a stable tag that was published without this job running.
+  homebrew:
+    name: Homebrew tap
+    needs: [verify, publish]
+    if: needs.verify.outputs.prerelease == 'false'
+    uses: ./.github/workflows/homebrew.yml
+    with:
+      tag: ${{ needs.verify.outputs.tag }}
+    secrets:
+      HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}

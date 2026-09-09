@@ -51,6 +51,21 @@ and `./bin/clocwork` runs straight from a checkout. It is also a
 [uv](https://docs.astral.sh/uv/) project. `uv sync` creates `.venv` with the
 package installed in editable mode and puts a `clocwork` command on the path.
 
+## Install
+
+```bash
+brew install wojciechpolak/clocwork/clocwork
+```
+
+`cloc` comes with it. The formula installs the release wheel into a virtualenv
+of its own, so nothing is built and pip never reaches PyPI. The tap is
+[wojciechpolak/homebrew-clocwork](https://github.com/wojciechpolak/homebrew-clocwork).
+
+An installed `clocwork` reads the `projects.toml` of the directory you run it
+in and writes the report to `out/` beside that file, so a bare `clocwork` works
+anywhere you keep a project list. In a checkout the two are the same place,
+which is why `uv run clocwork` needs no flags either.
+
 ## Use
 
 ```
@@ -192,9 +207,9 @@ Cache the clone directory and the job clones once and fetches on every run
 after. Point `--cache` at a path inside the workspace, since that is the only
 place `actions/cache` can see.
 
-Pass `--config` and `--out` explicitly. Both default to a path next to the
-installed package, which is the repository when you work on a checkout and
-site-packages when you install one.
+Both flags are explicit above so the job decides its own workspace layout.
+Left out, `--config` reads `projects.toml` from the working directory and
+`--out` writes beside whichever config file it found.
 
 ### Public and private projects
 

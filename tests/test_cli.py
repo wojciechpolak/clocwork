@@ -6,7 +6,7 @@ import os
 import subprocess
 import tempfile
 import unittest
-from contextlib import redirect_stderr, redirect_stdout
+from contextlib import chdir, redirect_stderr, redirect_stdout
 from pathlib import Path
 from unittest import mock
 
@@ -364,6 +364,81 @@ class TestOutputPath(unittest.TestCase):
     def test_the_prefix_survives_a_custom_basename(self):
         path = cli.output_path(Path("/out"), "all", render_pkg.get("txt"))
         self.assertEqual(path, Path("/out/cw-all.txt"))
+
+
+class TestDefaultPaths(unittest.TestCase):
+    """Where --config and --out point when neither is typed.
+
+    PACKAGE_ROOT is the repository in a checkout and site-packages in an
+    installed clocwork. Anchored to it alone, the defaults sent a Homebrew or
+    pip install looking for a project list it can never have, and wrote the
+    report inside the install prefix.
+    """
+
+    def setUp(self):
+        # Resolved, because default_config_path() reads Path.cwd(), which on
+        # macOS returns /private/var where the temp directory says /var.
+        self.tmp = Path(self.enterContext(tempfile.TemporaryDirectory())).resolve()
+        (self.tmp / "alpha").mkdir()
+        self.config = self.tmp / "projects.toml"
+        self.config.write_text(
+            f'[defaults]\nroot = "{self.tmp}"\n\n[[project]]\nrepo = "alpha"\n'
+        )
+
+    def run_main(self, *argv):
+        completed = subprocess.CompletedProcess(["cloc"], 0, SAMPLE, "")
+        with mock.patch.object(collect.subprocess, "run", return_value=completed), \
+             mock.patch.object(collect.shutil, "which", return_value="/bin/cloc"), \
+             redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
+            return cli.main(["--quiet", "--format", "txt", *argv])
+
+    def test_a_project_list_here_is_the_default_config(self):
+        self.enterContext(chdir(self.tmp))
+        self.assertEqual(cli.default_config_path(), self.config)
+
+    def test_without_one_the_default_sits_beside_the_tool(self):
+        empty = Path(self.enterContext(tempfile.TemporaryDirectory())).resolve()
+        self.enterContext(chdir(empty))
+        self.assertEqual(
+            cli.default_config_path(),
+            cli.PACKAGE_ROOT / "projects.toml",
+        )
+
+    def test_a_directory_named_projects_toml_is_not_a_config(self):
+        empty = Path(self.enterContext(tempfile.TemporaryDirectory())).resolve()
+        (empty / "projects.toml").mkdir()
+        self.enterContext(chdir(empty))
+        self.assertEqual(
+            cli.default_config_path(),
+            cli.PACKAGE_ROOT / "projects.toml",
+        )
+
+    def test_the_report_lands_beside_the_config(self):
+        self.assertEqual(self.run_main("--config", str(self.config)), 0)
+        self.assertTrue((self.tmp / "out" / "cw-report.txt").is_file())
+
+    def test_running_here_needs_no_flags_at_all(self):
+        # An installed clocwork, in a directory holding a project list,
+        # writes its report there.
+        self.enterContext(chdir(self.tmp))
+        self.assertEqual(self.run_main(), 0)
+        self.assertTrue((self.tmp / "out" / "cw-report.txt").is_file())
+
+    def test_a_typed_out_wins(self):
+        elsewhere = self.tmp / "somewhere"
+        self.run_main("--config", str(self.config), "--out", str(elsewhere))
+        self.assertTrue((elsewhere / "cw-report.txt").is_file())
+        self.assertFalse((self.tmp / "out").exists())
+
+    def test_a_cli_table_out_wins(self):
+        self.config.write_text(
+            f'[defaults]\nroot = "{self.tmp}"\n\n'
+            '[cli]\nout = "configured"\n\n'
+            '[[project]]\nrepo = "alpha"\n'
+        )
+        self.run_main("--config", str(self.config))
+        self.assertTrue((self.tmp / "configured" / "cw-report.txt").is_file())
+        self.assertFalse((self.tmp / "out").exists())
 
 
 class TestMain(unittest.TestCase):

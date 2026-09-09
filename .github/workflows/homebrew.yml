@@ -1,0 +1,238 @@
+name: Homebrew tap
+
+# Puts a published release into wojciechpolak/homebrew-clocwork, which is what
+# `brew install wojciechpolak/clocwork/clocwork` resolves.
+#
+# The formula is derived from a release, never the other way round, so this
+# runs after the release is published and is the only writer of
+# Formula/clocwork.rb. It takes the checksum from the release's own SHA256SUMS,
+# renders the whole formula from it, installs that formula on macOS and Linux,
+# and only then pushes. A run for a version the tap already carries changes no
+# bytes and commits nothing, so re-running it is safe.
+#
+# The manual trigger backfills a stable tag that was published without reaching
+# the tap. It takes the same path as the automatic one and can reach no
+# further: the tag has to name a published, non-draft, non-pre-release release.
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: The published release tag to put in the tap.
+        required: true
+        type: string
+    secrets:
+      HOMEBREW_TAP_TOKEN:
+        description:
+          Fine-grained token with contents write on
+          wojciechpolak/homebrew-clocwork and no access to anything else.
+        required: true
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Published stable tag to backfill, for example v0.9.0'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+# The tap holds one formula and every run rewrites it, so two releases updating
+# it at once would race on the push. They queue instead.
+concurrency:
+  group: homebrew-tap
+  cancel-in-progress: false
+
+jobs:
+  formula:
+    name: Render the formula
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout the tagged tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.tag }}
+          persist-credentials: false
+
+      # A draft release is not published, and a pre-release is a candidate for
+      # the version it names. Neither is what `brew install` should hand
+      # anyone. The caller already skips those tags, so reaching this check
+      # means something upstream is wrong and the run fails rather than
+      # publishing quietly.
+      - name: The tag names a published stable release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          case "$TAG" in
+            *-*)
+              echo "::error::$TAG is a pre-release tag and never reaches the tap"
+              exit 1
+              ;;
+          esac
+          state="$(gh release view "$TAG" --json isDraft,isPrerelease \
+            --jq '"\(.isDraft) \(.isPrerelease)"')"
+          if [ "$state" != "false false" ]; then
+            echo "::error::$TAG is not a published stable release (draft/prerelease: $state)"
+            exit 1
+          fi
+
+      # The formula installs the wheel the release published, so the checksum
+      # comes from that release's own manifest and is then checked against the
+      # file itself, so the number in the formula is the one the release
+      # attested.
+      - name: Read the wheel's checksum from the release
+        id: wheel
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          version="${TAG#v}"
+          wheel="clocwork-$version-py3-none-any.whl"
+          cd "$RUNNER_TEMP"
+          gh release download "$TAG" --pattern SHA256SUMS --pattern "$wheel" --clobber
+          # SHA256SUMS lists the sdist too, which is not downloaded here.
+          sha256sum --check --ignore-missing SHA256SUMS
+          sha256="$(awk -v name="$wheel" '$2 == name { print $1 }' SHA256SUMS)"
+          test -n "$sha256"
+          echo "sha256=$sha256" >> "$GITHUB_OUTPUT"
+
+      # The renderer refuses a pre-release version and anything that is not a
+      # SHA-256, so a formula cannot be written from inputs that got this far
+      # by mistake. --check re-runs it against what it just wrote, which is
+      # what lets the tap job below skip an empty commit.
+      - name: Render the formula
+        env:
+          TAG: ${{ inputs.tag }}
+          SHA256: ${{ steps.wheel.outputs.sha256 }}
+        run: |
+          set -euo pipefail
+          ./scripts/render-homebrew-formula "$TAG" "$SHA256" \
+            --out homebrew/Formula/clocwork.rb
+          ruby -c homebrew/Formula/clocwork.rb
+          ./scripts/render-homebrew-formula "$TAG" "$SHA256" \
+            --check homebrew/Formula/clocwork.rb
+          cat homebrew/Formula/clocwork.rb
+
+      - name: Upload the formula
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: clocwork-homebrew
+          path: homebrew/
+          if-no-files-found: error
+
+  # A formula can be valid Ruby, pass audit, and still install a virtualenv
+  # that cannot import clocwork. This installs it on both platforms Homebrew
+  # supports and makes the result count something, before the tap ever sees it.
+  test:
+    name: Install (${{ matrix.os }})
+    needs: formula
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@8f3d1ec8a696b3b9d9a6c3696b6c73033cab69e4 # 2026.08.14.1
+
+      - name: Download the formula
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: clocwork-homebrew
+          path: homebrew
+
+      - name: Install it through a throwaway tap
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          git config --global user.name github-actions
+          git config --global user.email github-actions@github.com
+          brew tap-new clocwork/release-test
+          tap="$(brew --repository clocwork/release-test)"
+          cp homebrew/Formula/clocwork.rb "$tap/Formula/clocwork.rb"
+          brew style --formula clocwork/release-test/clocwork
+          brew audit --strict --formula clocwork/release-test/clocwork
+          brew install --formula clocwork/release-test/clocwork
+          test "$(clocwork --version)" = "clocwork ${TAG#v}"
+          command -v cloc
+
+      # The same count a user makes, from PATH, writing files. --config and
+      # --out are explicit so this step works for any released version,
+      # including one predating the working-directory default.
+      - name: Count something with it
+        run: |
+          set -euo pipefail
+          work="$RUNNER_TEMP/count"
+          mkdir -p "$work/src"
+          printf "print('hi')\n" > "$work/src/hello.py"
+          cat > "$work/projects.toml" <<'TOML'
+          [defaults]
+          root = "."
+          vcs = "none"
+
+          [[project]]
+          repo = "src"
+          name = "Sample"
+          TOML
+          clocwork --quiet --config "$work/projects.toml" --out "$work/out"
+          test -f "$work/out/cw-report.txt"
+          test -f "$work/out/cw-card-languages.svg"
+          grep -F Python "$work/out/cw-report.txt"
+
+      - name: Formula test block
+        run: brew test clocwork/release-test/clocwork
+
+      - name: Uninstall
+        run: |
+          set -euo pipefail
+          brew uninstall clocwork
+          ! brew list --formula clocwork >/dev/null 2>&1
+
+      - name: Remove the throwaway tap
+        if: always()
+        run: brew untap clocwork/release-test || true
+
+  update-tap:
+    name: Update the tap
+    needs: [formula, test]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout the tap
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: wojciechpolak/homebrew-clocwork
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          path: tap
+
+      - name: Download the tested formula
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: clocwork-homebrew
+          path: homebrew
+
+      - name: Commit and push
+        working-directory: tap
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          mkdir -p Formula
+          cp ../homebrew/Formula/clocwork.rb Formula/clocwork.rb
+          if git diff --quiet -- Formula/clocwork.rb; then
+            echo "the tap already carries $TAG"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add Formula/clocwork.rb
+          git commit -m "clocwork ${TAG#v}"
+          git push

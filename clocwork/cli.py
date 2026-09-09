@@ -24,6 +24,20 @@ SORT_KEYS = ("code", "name", "files")
 HELP_WIDTH = 80
 
 
+def default_config_path() -> Path:
+    """projects.toml in the working directory, else the one beside the tool.
+
+    PACKAGE_ROOT is the repository in a checkout and site-packages anywhere
+    else, so the second half of that answer is only useful to someone running
+    from the source tree. An installed clocwork, from Homebrew or a plain pip,
+    has no project list next to it and never will, and the working directory
+    is the only place it can look. In a checkout the two agree: the working
+    directory is the repository root, and both name the same file.
+    """
+    local = Path.cwd() / DEFAULT_CONFIG_NAME
+    return local if local.is_file() else PACKAGE_ROOT / DEFAULT_CONFIG_NAME
+
+
 class HelpFormatter(argparse.RawDescriptionHelpFormatter):
     """Wrap help at HELP_WIDTH, or at the terminal when it is narrower.
 
@@ -72,14 +86,16 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "-c",
         "--config",
-        default=str(PACKAGE_ROOT / DEFAULT_CONFIG_NAME),
-        help=f"project list (default: {DEFAULT_CONFIG_NAME} next to this tool)",
+        default=str(default_config_path()),
+        help=f"project list (default: {DEFAULT_CONFIG_NAME} here, "
+        "else next to this tool)",
     )
     parser.add_argument(
         "-o",
         "--out",
-        default=str(PACKAGE_ROOT / DEFAULT_OUT),
-        help=f"output directory (default: {DEFAULT_OUT}/)",
+        # Left unset so main can put it beside whichever config file won.
+        default=None,
+        help=f"output directory (default: {DEFAULT_OUT}/ beside the config)",
     )
     parser.add_argument(
         "--cache",
@@ -555,7 +571,16 @@ def main(argv: list[str] | None = None, use_config_cli: bool = True) -> int:
             )
         )
     else:
-        out_dir = Path(args.out).expanduser()
+        # A relative path in [cli] out already resolved against the config
+        # file, and so does this default, so the flag and the config key agree
+        # about where out/ is. root and cache resolve the same way. Only a
+        # typed --out follows the working directory, because that is where
+        # you typed it.
+        out_dir = (
+            Path(args.out).expanduser()
+            if args.out
+            else config.source.parent / DEFAULT_OUT
+        )
         out_dir.mkdir(parents=True, exist_ok=True)
         for name in formats:
             fmt = render_pkg.get(name)
