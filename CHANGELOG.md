@@ -8,6 +8,8 @@ and this project follows
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-09-09
+
 First public release. clocwork reads a list of projects from `projects.toml`,
 runs cloc once per project, and turns the counts into one report by language, by
 project, and in total.
