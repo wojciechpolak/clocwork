@@ -12,9 +12,11 @@ Reads no config. The counts come from showcase(), so there is nothing private
 to audit for, and nothing here is a true count. model.py still sums the totals
 from those counts rather than taking a figure typed in.
 
-The banner is framed, and a rounded corner rasterises to transparency, which
-lands on whatever colour the viewer composites against. Every rasteriser below
-flattens onto white.
+The card is centred with SAFE clear on every edge, and its own frame comes off.
+The mat is already the colour that frame drew a box in, and a border sitting a
+hair inside the safe zone reads as a crop mark. Nothing rounds a corner now, so
+nothing rasterises to transparency, but the rasterisers still flatten onto
+white.
 """
 
 from __future__ import annotations
@@ -32,6 +34,7 @@ sys.path.insert(0, str(ROOT))
 from clocwork import render as render_pkg  # noqa: E402
 from clocwork.model import LangCount, ProjectReport, Report  # noqa: E402
 from clocwork.render import DARK_BG, LIGHT_BG  # noqa: E402
+from clocwork.render import svg as svg_pkg  # noqa: E402
 from clocwork.render.svg import banner  # noqa: E402
 
 DOCS = ROOT / "docs"
@@ -43,23 +46,19 @@ WIDTH = 1280
 HEIGHT = 640
 SAFE = 40
 
-# The largest banner that clears SAFE on all four edges. The layout is locked
-# to 2:1, so the shorter axis decides: 640 - 2*SAFE leaves 560, and 560 doubled
-# is narrower than 1280 - 2*SAFE. The horizontal margin is therefore wider than
-# SAFE rather than the vertical one being thinner, which is the way round that
-# keeps the guarantee. Centring is what turns those two numbers into offsets.
+# The largest banner that clears SAFE on all four edges. banner is locked to
+# 2:1, so the short axis decides. 560 tall makes it 1120 wide, which leaves 80
+# at the sides rather than a vertical margin under 40.
 CARD_WIDTH = min(WIDTH - 2 * SAFE,
                  (HEIGHT - 2 * SAFE) * banner.WIDTH // banner.HEIGHT)
-# The layout derives its height from its width, so this reads that back with
-# the same expression rather than deciding it a second time here.
+# banner derives its height from its width. Same expression, so the two agree.
 CARD_HEIGHT = round(banner.HEIGHT * CARD_WIDTH / banner.WIDTH)
 
 BACKGROUND = "white"
 
-# The mat is the card's own background, so the two agree in either theme. Both
-# halves, or a dark page gets a white band around a dark card. The colours are
-# render.LIGHT_BG / DARK_BG rather than a third spelling of them, since those
-# are already what `.bg` is fitted against.
+# The background the card used to draw for itself, so the colours are render's
+# rather than a third spelling of them. Both halves, or a dark page gets a
+# white band around dark type.
 MAT_STYLE = f"""
     .mat {{ fill: {LIGHT_BG}; }}
     @media (prefers-color-scheme: dark) {{
@@ -124,18 +123,31 @@ def showcase() -> Report:
     )
 
 
+def unframe(card: str) -> str:
+    """Drop the card's background rect, leaving the mat as the only ground.
+
+    Matching is `svg.frame`'s own output at this size, so chrome that moved
+    stops the run rather than shipping a bordered picture. The element has to
+    go rather than the stroke attribute, since `.bg` in the card's stylesheet
+    carries the colour and CSS beats the attribute.
+    """
+    rect = svg_pkg.frame(CARD_WIDTH, CARD_HEIGHT)
+    if rect + "\n" not in card:
+        raise ValueError("the banner did not draw svg.frame()'s rect")
+    return card.replace(rect + "\n", "", 1)
+
+
 def matte(card: str, width: int, height: int) -> str:
     """Centre the card on the canvas, leaving SAFE clear on every edge.
 
     banner.render returns a whole SVG document, so this re-roots rather than
-    edits: the card becomes a nested <svg> placed at the inset, keeping its own
-    viewBox, and the outer element takes over the canvas and the accessible
-    name. Nothing inside the layout has to know it moved, which is the point --
-    the drawing stays shipped code with the suite behind it, and the margin is
-    the script's business alone.
+    edits. The card becomes a nested <svg> at the inset, keeping its own
+    viewBox, and the new outer element takes the canvas and the accessible
+    name. The layout never learns it moved, which is why the margin can be the
+    script's business alone.
 
-    A nested <svg> shares the document's styles, so the card's <style> block
-    still reaches the mat's own rule; MAT_STYLE only adds one.
+    A nested <svg> shares the document's styles, so MAT_STYLE adds one rule
+    to the card's stylesheet rather than replacing it.
     """
     root, body = card.split("\n", 1)
     if not root.startswith("<svg "):
@@ -201,7 +213,7 @@ def main() -> int:
         "svg", showcase(), layout="banner", width=CARD_WIDTH, title=TITLE,
         subtitle=SUBTITLE,
     )
-    svg = matte(card, CARD_WIDTH, CARD_HEIGHT)
+    svg = matte(unframe(card), CARD_WIDTH, CARD_HEIGHT)
 
     DOCS.mkdir(parents=True, exist_ok=True)
     SVG_PATH.write_text(svg, encoding="utf-8")
