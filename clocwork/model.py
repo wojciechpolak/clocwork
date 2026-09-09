@@ -10,8 +10,42 @@ what keeps the TXT/Markdown/HTML/SVG outputs from drifting apart.
 from __future__ import annotations
 
 from dataclasses import dataclass, field, replace
+from datetime import UTC, datetime
 
 from . import __version__
+
+# How precise the generated-at stamp is. `none` leaves it out altogether, which
+# is what makes two runs over unchanged code write identical bytes. The stamp is
+# the last thing in the output that a rerun changes by itself, now that
+# `--hide-rate` keeps cloc's own timings out of the JSON.
+DATE_PRECISIONS = ("minute", "day", "month", "none")
+DEFAULT_DATE = "minute"
+
+# The date comes first in all three, because the SVG footer has room for the
+# date alone and takes it by splitting on the first space. Only `minute` names
+# the zone: it qualifies a clock reading, and there is no clock in the other
+# two. A bare calendar date carries no zone in ISO 8601 either, and the card
+# has always footered one without.
+_STAMP_FORMATS = {
+    "minute": "%Y-%m-%d %H:%M UTC",
+    "day": "%Y-%m-%d",
+    "month": "%Y-%m",
+}
+
+
+def stamp(precision: str, now: datetime | None = None) -> str:
+    """Format the run's generated-at line, or return '' for no stamp at all.
+
+    `now` is a parameter so tests need no clock.
+    """
+    if precision == "none":
+        return ""
+    if precision not in _STAMP_FORMATS:
+        raise ValueError(
+            f"unknown --date {precision!r}; "
+            f"choose from {', '.join(DATE_PRECISIONS)}"
+        )
+    return (now or datetime.now(UTC)).strftime(_STAMP_FORMATS[precision])
 
 
 @dataclass(frozen=True)
@@ -107,6 +141,14 @@ class Report:
     clocwork_version: str = __version__
     cloc_version: str | None = None
     sort_key: str = "code"
+
+    @property
+    def generated_date(self) -> str:
+        """The date half of the stamp, which is all a card has room for.
+
+        Empty when `--date none` left no stamp for it to be half of.
+        """
+        return self.generated_at.split(" ")[0]
 
     @property
     def counted(self) -> list[ProjectReport]:

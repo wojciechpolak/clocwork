@@ -2,13 +2,16 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import unittest
+from datetime import UTC, datetime
 
 from clocwork.model import (
+    DATE_PRECISIONS,
     LangCount,
     ProjectReport,
     Report,
     merge_projects,
     sort_languages,
+    stamp,
 )
 from tests.helpers import sample_report
 
@@ -122,6 +125,50 @@ class TestMergeProjects(unittest.TestCase):
         merged = merge_projects([], "UNDISCLOSED")
         self.assertEqual(merged.languages, {})
         self.assertEqual(merged.total, LangCount())
+
+
+class TestStamp(unittest.TestCase):
+    NOON = datetime(2026, 9, 8, 12, 34, 56, tzinfo=UTC)
+
+    def test_each_precision(self):
+        for precision, expected in (
+            ("minute", "2026-09-08 12:34 UTC"),
+            ("day", "2026-09-08"),
+            ("month", "2026-09"),
+            ("none", ""),
+        ):
+            with self.subTest(precision=precision):
+                self.assertEqual(stamp(precision, self.NOON), expected)
+
+    def test_only_the_clock_reading_names_a_zone(self):
+        self.assertTrue(stamp("minute", self.NOON).endswith(" UTC"))
+        for precision in ("day", "month", "none"):
+            with self.subTest(precision=precision):
+                self.assertNotIn("UTC", stamp(precision, self.NOON))
+
+    def test_every_precision_is_formattable(self):
+        for precision in DATE_PRECISIONS:
+            with self.subTest(precision=precision):
+                stamp(precision, self.NOON)
+
+    def test_an_unknown_precision_names_the_choices(self):
+        with self.assertRaises(ValueError) as caught:
+            stamp("monthly")
+        for precision in DATE_PRECISIONS:
+            self.assertIn(precision, str(caught.exception))
+
+    def test_the_date_half_is_what_a_card_gets(self):
+        for precision, expected in (
+            ("minute", "2026-09-08"),
+            ("day", "2026-09-08"),
+            ("month", "2026-09"),
+            ("none", ""),
+        ):
+            with self.subTest(precision=precision):
+                report = Report(
+                    generated_at=stamp(precision, self.NOON), projects=[]
+                )
+                self.assertEqual(report.generated_date, expected)
 
 
 if __name__ == "__main__":

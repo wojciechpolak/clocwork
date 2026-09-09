@@ -223,9 +223,10 @@ def render(
     out.append("<h1>Lines of code</h1>")
 
     meta = (
-        f"Generated {escape(report.generated_at)} &middot; "
         f'<a href="{__url__}">clocwork</a> {escape(report.clocwork_version)}'
     )
+    if report.generated_at:
+        meta = f"Generated {escape(report.generated_at)} &middot; " + meta
     if report.cloc_version:
         meta += (
             f' &middot; <a href="{CLOC_URL}">cloc</a> '

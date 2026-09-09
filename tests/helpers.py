@@ -13,7 +13,9 @@ from clocwork.model import LangCount, ProjectReport, Report
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
 
 
-def sample_report(with_failure: bool = False) -> Report:
+def sample_report(
+    with_failure: bool = False, generated_at: str = "2026-01-01 00:00 UTC"
+) -> Report:
     alpha = ProjectReport(
         name="alpha",
         path="/tmp/alpha",
@@ -40,5 +42,5 @@ def sample_report(with_failure: bool = False) -> Report:
         projects.append(
             ProjectReport(name="gamma", path="/tmp/gamma", error="directory not found")
         )
-    return Report(generated_at="2026-01-01 00:00 UTC", projects=projects,
+    return Report(generated_at=generated_at, projects=projects,
                   cloc_version="2.10")

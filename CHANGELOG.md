@@ -8,6 +8,14 @@ and this project follows
 
 ## [Unreleased]
 
+### Added
+
+- `--date {minute,day,month,none}` sets how precise the generated-at stamp is.
+  It is the only thing left in the output that a rerun over unchanged code
+  changes by itself, so `--date none` makes two runs write identical bytes and
+  a scheduled job commits only when the code moved. The default is unchanged,
+  and the key is settable in the config's `[cli]` table.
+
 ## [0.9.1] - 2026-09-09
 
 ### Added

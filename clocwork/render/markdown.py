@@ -48,8 +48,9 @@ def render(
         f"and **{group_digits(total.files)}** files."
     )
     out.append("")
+    when = f"{report.generated_at} " if report.generated_at else ""
     out.append(
-        f"<sub>Generated {report.generated_at} "
+        f"<sub>Generated {when}"
         f"by [clocwork]({__url__}) {report.clocwork_version}"
     )
     if report.cloc_version:

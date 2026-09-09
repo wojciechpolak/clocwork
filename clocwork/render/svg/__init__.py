@@ -235,8 +235,13 @@ def footer_line(report: Report) -> str:
     the room to say which cloc and which clocwork produced the numbers. The
     frameless layouts (`strip`, `bar`) carry no footer at all; they sit under
     other content, and the README that embeds them is where the credit goes.
+
+    Under `--date none` there is no date, and the two names are the whole
+    signature. Joining the parts keeps each separator with the part it
+    separates, so nothing trails off the end.
     """
-    return f"clocwork · cloc · {report.generated_at.split(' ')[0]}"
+    parts = ("clocwork", "cloc", report.generated_date)
+    return " · ".join(part for part in parts if part)
 
 
 def header(

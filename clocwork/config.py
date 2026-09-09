@@ -58,6 +58,7 @@ _CLI_TYPES: dict[str, type] = {
     "by": str,
     "sections": str,
     "sort": str,
+    "date": str,
     "basename": str,
     "out": str,
     "detail": bool,

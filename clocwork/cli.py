@@ -8,7 +8,6 @@ from __future__ import annotations
 import argparse
 import shutil
 import sys
-from datetime import UTC, datetime
 from pathlib import Path
 
 from . import __version__
@@ -16,7 +15,14 @@ from . import render as render_pkg
 from .collect import ClocMissing, cloc_version, collect_all, ensure_cloc
 from .config import DEFAULT_CONFIG_NAME, ConfigError, ProjectSpec
 from .config import load as load_config
-from .model import ProjectReport, Report, merge_projects
+from .model import (
+    DATE_PRECISIONS,
+    DEFAULT_DATE,
+    ProjectReport,
+    Report,
+    merge_projects,
+    stamp,
+)
 
 PACKAGE_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUT = "out"
@@ -225,6 +231,16 @@ def build_parser() -> argparse.ArgumentParser:
         default="code",
         choices=SORT_KEYS,
         help="order rows by (default: code)",
+    )
+    parser.add_argument(
+        "--date",
+        default=DEFAULT_DATE,
+        choices=DATE_PRECISIONS,
+        help=(
+            f"how precise the generated-at stamp is (default: {DEFAULT_DATE}). "
+            "'none' leaves it out, so two runs over unchanged code write "
+            "identical bytes and a scheduled run only commits real changes"
+        ),
     )
     parser.add_argument(
         "--basename",
@@ -511,6 +527,11 @@ def main(argv: list[str] | None = None, use_config_cli: bool = True) -> int:
         subjects = resolve_subjects(args.by)
         svg_width = resolve_width(args.svg_width)
         svg_rows = resolve_rows(args.svg_rows)
+        # The stamp comes before the counting rather than after it. Either
+        # one is when the run happened, and nothing --date offers is fine
+        # enough to tell them apart. Resolving it here, beside the rest, gives
+        # a bad [cli] date the message and exit code a bad --sections gets.
+        generated_at = stamp(args.date)
     except (ClocMissing, ConfigError, ValueError) as exc:
         print(f"clocwork: {exc}", file=sys.stderr)
         return 2
@@ -549,7 +570,7 @@ def main(argv: list[str] | None = None, use_config_cli: bool = True) -> int:
         )
 
     report = Report(
-        generated_at=datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC"),
+        generated_at=generated_at,
         projects=reports,
         cloc_version=cloc_version(),
         sort_key=args.sort,

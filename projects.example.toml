@@ -40,6 +40,9 @@ mask_label = "UNDISCLOSED"
 # by = "all"           # what the SVG draws over: language, project, or "all"
 # sections = "all"     # summary tables: project, language, or "all"
 # sort = "code"        # code, name or files
+# date = "minute"      # precision of the generated-at stamp: minute, day,
+#                      # month or none. "none" drops it, so a rerun over
+#                      # unchanged code writes identical bytes
 # detail = false       # true is --detail. --no-detail turns it off for one run
 # svg_rows = 8         # rows an SVG labels. 0 labels every row
 # svg_width = 560      # pixels, at least 200. Omit and each layout picks its own

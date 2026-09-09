@@ -90,6 +90,7 @@ uv run clocwork --svg-rows 0           # label every row there is
 uv run clocwork --layout banner        # the wide 2:1 card
 uv run clocwork --svg-title clocwork   # its headline; other layouts ignore it
 uv run clocwork --sort name            # order rows alphabetically
+uv run clocwork --date none            # no stamp, so a rerun changes nothing
 uv run clocwork --no-fetch             # count cached clones, skip the network
 uv run clocwork --cache ./clones       # keep the clones somewhere else
 ```
@@ -98,6 +99,20 @@ A standard run leads with two summary tables, By project and By language.
 `--sections project` or `--sections language` keeps one of them. The default is
 both. Nothing else moves. The totals stay the same, `--detail` still works, and
 the SVG card is a language card either way.
+
+`--date` sets how precise the generated-at stamp is: `minute` (the default),
+`day`, `month`, or `none`. It is the only thing in the output that a rerun over
+unchanged code changes by itself, so `--date none` is what makes two runs write
+identical bytes. That is the setting for a scheduled run that commits what it
+draws:
+
+```bash
+clocwork --quiet --date none --out docs/
+git diff --quiet docs/ || git commit -m "chore: refresh the counts" docs/
+```
+
+Without it, the commit lands every time the job runs. `month` and `day` are the
+softer versions, for a report that should still say roughly when it was made.
 
 `./bin/clocwork` takes the same arguments and needs no virtualenv.
 
