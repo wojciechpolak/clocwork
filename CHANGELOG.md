@@ -8,6 +8,8 @@ and this project follows
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-09-09
+
 ### Added
 
 - A Homebrew tap, `wojciechpolak/homebrew-clocwork`. `brew install
