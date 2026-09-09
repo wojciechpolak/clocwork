@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="480" height="378" viewBox="0 0 480 378" role="img" aria-label="Lines of code by language: 600 340 in total">
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="378" viewBox="0 0 480 378" role="img" aria-label="Lines of code by language: 601 002 in total">
 <style>
     .bg { fill: #ffffff; stroke: #e3e6ea; }
     .title { fill: #6b7280; }
@@ -103,16 +103,16 @@
 </style>
 <rect class="bg" fill="#ffffff" stroke="#e3e6ea" x="0.5" y="0.5" width="479" height="377" rx="10"/>
 <text x="20" y="34" class="title" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="600" text-anchor="start">LINES OF CODE</text>
-<text x="20" y="70" class="figure" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="32" font-weight="700" text-anchor="start">600 340</text>
-<text x="20" y="90" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">17 projects  ·  4 253 files  ·  42 languages</text>
+<text x="20" y="70" class="figure" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="32" font-weight="700" text-anchor="start">601 002</text>
+<text x="20" y="90" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">17 projects  ·  4 256 files  ·  42 languages</text>
 <text x="20" y="116" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">TypeScript</text>
 <text x="460" y="116" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="400" text-anchor="end">179k  29.8%</text>
 <rect class="track" fill="#eceff3" x="20" y="122" width="440" height="6" rx="3.0"/>
 <rect class="l0" x="20" y="122" width="440.00" height="6" rx="3.0" fill="#3178c6"/>
 <text x="20" y="146" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">YAML</text>
-<text x="460" y="146" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="400" text-anchor="end">95.0k  15.8%</text>
+<text x="460" y="146" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="400" text-anchor="end">95.2k  15.8%</text>
 <rect class="track" fill="#eceff3" x="20" y="152" width="440" height="6" rx="3.0"/>
-<rect class="l1" x="20" y="152" width="233.34" height="6" rx="3.0" fill="#cb171e"/>
+<rect class="l1" x="20" y="152" width="233.81" height="6" rx="3.0" fill="#cb171e"/>
 <text x="20" y="176" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">JSON</text>
 <text x="460" y="176" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="400" text-anchor="end">85.4k  14.2%</text>
 <rect class="track" fill="#eceff3" x="20" y="182" width="440" height="6" rx="3.0"/>
@@ -126,16 +126,16 @@
 <rect class="track" fill="#eceff3" x="20" y="242" width="440" height="6" rx="3.0"/>
 <rect class="l4" x="20" y="242" width="78.89" height="6" rx="3.0" fill="#f1e05a"/>
 <text x="20" y="266" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">Python</text>
-<text x="460" y="266" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="400" text-anchor="end">30.9k  5.1%</text>
+<text x="460" y="266" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="400" text-anchor="end">31.3k  5.2%</text>
 <rect class="track" fill="#eceff3" x="20" y="272" width="440" height="6" rx="3.0"/>
-<rect class="l5" x="20" y="272" width="75.80" height="6" rx="3.0" fill="#3572a5"/>
+<rect class="l5" x="20" y="272" width="76.83" height="6" rx="3.0" fill="#3572a5"/>
 <text x="20" y="296" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">C#</text>
 <text x="460" y="296" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="400" text-anchor="end">18.5k  3.1%</text>
 <rect class="track" fill="#eceff3" x="20" y="302" width="440" height="6" rx="3.0"/>
 <rect class="l6" x="20" y="302" width="45.40" height="6" rx="3.0" fill="#178600"/>
 <text x="20" y="326" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">Markdown</text>
-<text x="460" y="326" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="400" text-anchor="end">17.4k  2.9%</text>
+<text x="460" y="326" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="400" text-anchor="end">17.5k  2.9%</text>
 <rect class="track" fill="#eceff3" x="20" y="332" width="440" height="6" rx="3.0"/>
-<rect class="l7" x="20" y="332" width="42.85" height="6" rx="3.0" fill="#083fa1"/>
+<rect class="l7" x="20" y="332" width="42.96" height="6" rx="3.0" fill="#083fa1"/>
 <text x="20" y="364" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" text-anchor="start">clocwork · cloc · 2026-09-09</text>
 </svg>

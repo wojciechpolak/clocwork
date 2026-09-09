@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="480" height="242" viewBox="0 0 480 242" role="img" aria-label="Lines of code by language: 600 340 in total">
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="242" viewBox="0 0 480 242" role="img" aria-label="Lines of code by language: 601 002 in total">
 <style>
     .bg { fill: #ffffff; stroke: #e3e6ea; }
     .title { fill: #6b7280; }
@@ -103,32 +103,32 @@
 </style>
 <rect class="bg" fill="#ffffff" stroke="#e3e6ea" x="0.5" y="0.5" width="479" height="241" rx="10"/>
 <text x="20" y="34" class="title" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="600" text-anchor="start">LINES OF CODE</text>
-<path class="l0" d="M82.00 48.00A62 62 0 0 1 141.16 128.54L123.99 123.16A44 44 0 0 0 82.00 66.00Z" fill="#3178c6"/>
-<path class="l1" d="M141.16 128.54A62 62 0 0 1 98.71 169.71L93.86 152.37A44 44 0 0 0 123.99 123.16Z" fill="#cb171e"/>
-<path class="l2" d="M98.71 169.71A62 62 0 0 1 45.93 160.43L56.40 145.79A44 44 0 0 0 93.86 152.37Z" fill="#8a8a8a"/>
-<path class="l3" d="M45.93 160.43A62 62 0 0 1 24.14 132.27L40.94 125.80A44 44 0 0 0 56.40 145.79Z" fill="#00add8"/>
-<path class="l4" d="M24.14 132.27A62 62 0 0 1 20.03 111.94L38.02 111.38A44 44 0 0 0 40.94 125.80Z" fill="#f1e05a"/>
-<path class="l5" d="M20.03 111.94A62 62 0 0 1 22.62 92.17L39.86 97.35A44 44 0 0 0 38.02 111.38Z" fill="#3572a5"/>
-<path class="l6" d="M22.62 92.17A62 62 0 0 1 27.15 81.09L43.08 89.48A44 44 0 0 0 39.86 97.35Z" fill="#178600"/>
-<path class="l7" d="M27.15 81.09A62 62 0 0 1 33.31 71.62L47.45 82.76A44 44 0 0 0 43.08 89.48Z" fill="#083fa1"/>
-<path class="l8" d="M33.31 71.62A62 62 0 0 1 41.06 63.44L52.94 76.96A44 44 0 0 0 47.45 82.76Z" fill="#555555"/>
-<path class="l9" d="M41.06 63.44A62 62 0 0 1 47.20 58.69L57.30 73.59A44 44 0 0 0 52.94 76.96Z" fill="#c6538c"/>
-<path class="l10" d="M47.20 58.69A62 62 0 0 1 52.40 55.52L60.99 71.34A44 44 0 0 0 57.30 73.59Z" fill="#563d7c"/>
-<path class="l11" d="M52.40 55.52A62 62 0 0 1 56.88 53.32L64.17 69.77A44 44 0 0 0 60.99 71.34Z" fill="#41b883"/>
-<path class="l12" d="M56.88 53.32A62 62 0 0 1 60.82 51.73L66.97 68.65A44 44 0 0 0 64.17 69.77Z" fill="#3da1a2"/>
-<path class="l13" d="M60.82 51.73A62 62 0 0 1 64.19 50.61L69.36 67.86A44 44 0 0 0 66.97 68.65Z" fill="#4f5d95"/>
-<path class="l14" d="M64.19 50.61A62 62 0 0 1 66.43 49.99L70.95 67.41A44 44 0 0 0 69.36 67.86Z" fill="#4358b1"/>
-<path class="l15" d="M66.43 49.99A62 62 0 0 1 68.54 49.48L72.45 67.05A44 44 0 0 0 70.95 67.41Z" fill="#e34c26"/>
-<path class="l16" d="M68.54 49.48A62 62 0 0 1 70.53 49.07L73.86 66.76A44 44 0 0 0 72.45 67.05Z" fill="#42a0ad"/>
-<path class="l17" d="M70.53 49.07A62 62 0 0 1 72.41 48.75L75.19 66.53A44 44 0 0 0 73.86 66.76Z" fill="#89e051"/>
-<path class="l18" d="M72.41 48.75A62 62 0 0 1 73.68 48.56L76.10 66.40A44 44 0 0 0 75.19 66.53Z" fill="#b19043"/>
-<path class="l19" d="M73.68 48.56A62 62 0 0 1 74.88 48.41L76.94 66.29A44 44 0 0 0 76.10 66.40Z" fill="#6143b1"/>
-<path class="l20" d="M74.88 48.41A62 62 0 0 1 75.72 48.32L77.54 66.23A44 44 0 0 0 76.94 66.29Z" fill="#3fa674"/>
-<path class="l21" d="M75.72 48.32A62 62 0 0 1 76.37 48.26L78.01 66.18A44 44 0 0 0 77.54 66.23Z" fill="#4ba63f"/>
-<path class="l22" d="M76.37 48.26A62 62 0 0 1 76.99 48.20L78.44 66.14A44 44 0 0 0 78.01 66.18Z" fill="#9c4221"/>
-<path class="l23" d="M76.99 48.20A62 62 0 0 1 77.58 48.16L78.86 66.11A44 44 0 0 0 78.44 66.14Z" fill="#3da295"/>
+<path class="l0" d="M82.00 48.00A62 62 0 0 1 141.20 128.42L124.01 123.07A44 44 0 0 0 82.00 66.00Z" fill="#3178c6"/>
+<path class="l1" d="M141.20 128.42A62 62 0 0 1 98.78 169.69L93.91 152.36A44 44 0 0 0 124.01 123.07Z" fill="#cb171e"/>
+<path class="l2" d="M98.78 169.69A62 62 0 0 1 46.04 160.51L56.48 145.84A44 44 0 0 0 93.91 152.36Z" fill="#8a8a8a"/>
+<path class="l3" d="M46.04 160.51A62 62 0 0 1 24.20 132.43L40.98 125.92A44 44 0 0 0 56.48 145.84Z" fill="#00add8"/>
+<path class="l4" d="M24.20 132.43A62 62 0 0 1 20.04 112.13L38.03 111.51A44 44 0 0 0 40.98 125.92Z" fill="#f1e05a"/>
+<path class="l5" d="M20.04 112.13A62 62 0 0 1 22.63 92.12L39.87 97.31A44 44 0 0 0 38.03 111.51Z" fill="#3572a5"/>
+<path class="l6" d="M22.63 92.12A62 62 0 0 1 27.17 81.05L43.09 89.46A44 44 0 0 0 39.87 97.31Z" fill="#178600"/>
+<path class="l7" d="M27.17 81.05A62 62 0 0 1 33.35 71.57L47.47 82.73A44 44 0 0 0 43.09 89.46Z" fill="#083fa1"/>
+<path class="l8" d="M33.35 71.57A62 62 0 0 1 41.09 63.41L52.97 76.94A44 44 0 0 0 47.47 82.73Z" fill="#555555"/>
+<path class="l9" d="M41.09 63.41A62 62 0 0 1 47.23 58.67L57.32 73.57A44 44 0 0 0 52.97 76.94Z" fill="#c6538c"/>
+<path class="l10" d="M47.23 58.67A62 62 0 0 1 52.42 55.51L61.01 71.33A44 44 0 0 0 57.32 73.57Z" fill="#563d7c"/>
+<path class="l11" d="M52.42 55.51A62 62 0 0 1 56.90 53.31L64.19 69.77A44 44 0 0 0 61.01 71.33Z" fill="#41b883"/>
+<path class="l12" d="M56.90 53.31A62 62 0 0 1 60.84 51.72L66.99 68.64A44 44 0 0 0 64.19 69.77Z" fill="#3da1a2"/>
+<path class="l13" d="M60.84 51.72A62 62 0 0 1 64.20 50.61L69.37 67.85A44 44 0 0 0 66.99 68.64Z" fill="#4f5d95"/>
+<path class="l14" d="M64.20 50.61A62 62 0 0 1 66.45 49.98L70.96 67.41A44 44 0 0 0 69.37 67.85Z" fill="#4358b1"/>
+<path class="l15" d="M66.45 49.98A62 62 0 0 1 68.56 49.48L72.46 67.05A44 44 0 0 0 70.96 67.41Z" fill="#e34c26"/>
+<path class="l16" d="M68.56 49.48A62 62 0 0 1 70.54 49.07L73.87 66.76A44 44 0 0 0 72.46 67.05Z" fill="#42a0ad"/>
+<path class="l17" d="M70.54 49.07A62 62 0 0 1 72.42 48.74L75.20 66.53A44 44 0 0 0 73.87 66.76Z" fill="#89e051"/>
+<path class="l18" d="M72.42 48.74A62 62 0 0 1 73.69 48.56L76.11 66.40A44 44 0 0 0 75.20 66.53Z" fill="#b19043"/>
+<path class="l19" d="M73.69 48.56A62 62 0 0 1 74.88 48.41L76.95 66.29A44 44 0 0 0 76.11 66.40Z" fill="#6143b1"/>
+<path class="l20" d="M74.88 48.41A62 62 0 0 1 75.73 48.32L77.55 66.23A44 44 0 0 0 76.95 66.29Z" fill="#3fa674"/>
+<path class="l21" d="M75.73 48.32A62 62 0 0 1 76.38 48.26L78.01 66.18A44 44 0 0 0 77.55 66.23Z" fill="#4ba63f"/>
+<path class="l22" d="M76.38 48.26A62 62 0 0 1 76.99 48.20L78.45 66.14A44 44 0 0 0 78.01 66.18Z" fill="#9c4221"/>
+<path class="l23" d="M76.99 48.20A62 62 0 0 1 77.58 48.16L78.86 66.11A44 44 0 0 0 78.45 66.14Z" fill="#3da295"/>
 <path class="l24" d="M77.58 48.16A62 62 0 0 1 78.15 48.12L79.27 66.08A44 44 0 0 0 78.86 66.11Z" fill="#8243b1"/>
-<text x="82" y="112" class="figure" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20" font-weight="700" text-anchor="middle">600k</text>
+<text x="82" y="112" class="figure" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20" font-weight="700" text-anchor="middle">601k</text>
 <text x="82" y="128" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="10" font-weight="400" text-anchor="middle">lines</text>
 <circle class="l0" cx="170" cy="58" r="4" fill="#3178c6"/>
 <text x="182" y="62" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="500" text-anchor="start">TypeScript</text>
@@ -147,7 +147,7 @@
 <text x="460" y="142" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="end">5.3%</text>
 <circle class="l5" cx="170" cy="158" r="4" fill="#3572a5"/>
 <text x="182" y="162" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="500" text-anchor="start">Python</text>
-<text x="460" y="162" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="end">5.1%</text>
+<text x="460" y="162" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="end">5.2%</text>
 <circle class="l6" cx="170" cy="178" r="4" fill="#178600"/>
 <text x="182" y="182" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="500" text-anchor="start">C#</text>
 <text x="460" y="182" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="end">3.1%</text>
