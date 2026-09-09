@@ -1,0 +1,299 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Wojciech Polak
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+"""Regenerate the committed gallery under docs/ from the real projects.toml.
+
+This is the one place the repository commits output made from a private
+config, so the flags that keep it anonymous live here, in code, rather than in
+a README line somebody retypes:
+
+    clocwork --mask --layout all --by all --svg-rows 8 --out docs/gallery
+"""
+
+import re
+import sys
+from pathlib import Path
+from shlex import quote
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from clocwork import render as render_pkg  # noqa: E402
+from clocwork.cli import main as clocwork_main  # noqa: E402
+from clocwork.cli import output_path  # noqa: E402
+from clocwork.config import DEFAULT_CONFIG_NAME, Config, ConfigError  # noqa: E402
+from clocwork.config import load as load_config  # noqa: E402
+from clocwork.fetch import redact  # noqa: E402
+
+DOCS = ROOT / "docs"
+GALLERY = DOCS / "gallery"
+INDEX = DOCS / "gallery.md"
+BASENAME = "report"
+
+ARGV = [
+    "--mask",
+    "--layout",
+    "all",
+    "--by",
+    "all",
+    "--svg-rows",
+    "8",
+    # Only `banner` has anywhere to draw these, and without them it is the one
+    # layout the gallery would show doing less than it can. Both lines are
+    # true of this run and name nothing.
+    "--svg-title",
+    "Every project",
+    "--svg-subtitle",
+    "public and private together, the private ones masked",
+    "--basename",
+    BASENAME,
+    "--out",
+    str(GALLERY),
+]
+
+# A token shorter than this matches half the English language, so it would fail
+# every run for nothing. Nothing identifying is that short anyway.
+MIN_TOKEN = 3
+
+SHAPES = {
+    "card": "The default. Grand total, a proportion bar, and the top rows "
+    "underneath.",
+    "strip": "A thin band of chips that wraps to as many lines as it needs. No "
+    "frame and no totals, so it sits under other content.",
+    "bar": "One proportion bar with a single line of labels below it. `strip` "
+    "trimmed to its shortest form.",
+    "bars": "The card header over a ranked bar per row, longest first.",
+    "donut": "A ring of shares with the grand total in the middle.",
+    "banner": "A heading block, a ring, and a proportion bar across the foot, "
+    "always twice as wide as it is tall. The only layout that takes text of "
+    "its own. `--svg-title` and `--svg-subtitle` wrote the two lines on the "
+    "left.",
+}
+
+SUBJECTS = {
+    "language": "by language",
+    "project": "by project",
+}
+
+
+def written_files() -> list[Path]:
+    """Everything sitting in the gallery directory, generated or left over.
+
+    The audit covers leftovers from an earlier run too. They are as easy to
+    commit as anything this run wrote, and stale the moment the config changes.
+    """
+    if not GALLERY.is_dir():
+        return []
+    return sorted(p for p in GALLERY.iterdir() if p.is_file())
+
+
+def matcher(token: str) -> re.Pattern[str]:
+    """A token bounded by anything that is not a letter or a digit.
+
+    Plain substring matching is too eager. A three-letter directory name
+    turned up inside `nowrap` in the HTML stylesheet and failed the first run
+    that had nothing wrong with it. Underscores and hyphens still count as
+    boundaries, so `<name>_backend` still matches.
+    """
+    return re.compile(rf"(?<![0-9a-z]){re.escape(token)}(?![0-9a-z])")
+
+
+def tokens(config: Config) -> list[tuple[str, str]]:
+    """Strings that must not appear in a published file, each with its reason.
+
+    Private identity, plus the two absolute paths that could reach a file by
+    another route. The TXT renderer prints the path of any project it failed to
+    count, and that project may well be a public one.
+    """
+    public_parts = {
+        part.lower()
+        for spec in config.projects
+        if not spec.private
+        for part in spec.path.parts
+    }
+
+    found: dict[str, str] = {}
+
+    def add(value: str | None, reason: str) -> None:
+        if value and len(value) >= MIN_TOKEN:
+            found.setdefault(value.lower(), reason)
+
+    for spec in config.projects:
+        if not spec.private:
+            continue
+        add(spec.name, "a private project name")
+        add(spec.url, "a private project url")
+        # Redacted first: a token in a clone URL is not what the audit is for,
+        # and leaving it in would make the token itself the thing being matched.
+        add(redact(spec.repo) if spec.repo else None, "a private clone url")
+        add(str(spec.path), "a private project path")
+        for part in spec.path.parts:
+            # A parent shared with a public project gives nothing away.
+            if part.lower() not in public_parts:
+                add(part, "part of a private project path")
+
+    # Home covers `root` wherever the projects live under it. The user name
+    # alone is not a token; it would match the author's own GitHub urls.
+    add(str(Path.home()), "a local absolute path")
+    add(str(ROOT), "a local absolute path")
+    # The cache is where clones land, so it is the path a failed remote project
+    # would print, and it need not be under home.
+    add(str(config.cache), "a local absolute path")
+
+    return sorted(found.items())
+
+
+def audit(config: Config, files: list[Path]) -> list[str]:
+    """Every reason the gallery is not safe to commit, in the order found."""
+    problems = []
+    banned = tokens(config)
+
+    for path in files:
+        try:
+            text = path.read_text(encoding="utf-8").lower()
+        except UnicodeDecodeError:  # pragma: no cover - nothing binary is written
+            problems.append(f"{path.name}: not text, so it cannot be checked")
+            continue
+        # The message names the reason, never the token. The token is the
+        # thing being protected.
+        problems += [
+            f"{path.name}: contains {reason}"
+            for token, reason in banned
+            if matcher(token).search(text)
+        ]
+
+    # A scan that finds nothing cannot tell a masked run from one that never
+    # masked anything, so look for the label as well.
+    if any(spec.private for spec in config.projects):
+        report = output_path(GALLERY, BASENAME, render_pkg.get("md"))
+        label = config.mask_label.lower()
+        if not report.is_file():
+            problems.append(f"{report.name}: not written, so masking is unproven")
+        elif label not in report.read_text(encoding="utf-8").lower():
+            problems.append(
+                f"{report.name}: no {config.mask_label} row, "
+                "so the private projects were not masked"
+            )
+
+    return problems
+
+
+def svg_path(layout: str, by: str) -> Path:
+    return output_path(GALLERY, BASENAME, render_pkg.get("svg"), layout, by)
+
+
+def link(path: Path) -> str:
+    """docs/gallery.md sits one directory above the files it links."""
+    return path.relative_to(DOCS).as_posix()
+
+
+def index_markdown(config: Config) -> str:
+    # The real --out is an absolute path on this machine, and this file gets
+    # published, so the line quoted here says where the files land instead.
+    # The default basename goes too. It is noise in a line meant to be read.
+    noise = ("--out", str(GALLERY), "--basename", BASENAME)
+    shown = [quote(a) for a in ARGV if a not in noise]
+    command = " ".join(["clocwork", *shown, "--out", "docs/gallery"])
+    lines = [
+        "<!-- Generated by scripts/gallery. Edit that script, not this file. -->",
+        "",
+        "# Gallery",
+        "",
+        "Every shape clocwork draws, from one real run of:",
+        "",
+        "```",
+        f"{command}",
+        "```",
+        "",
+        "Real counts, from every project on the author's machine. `--mask` "
+        f"folded the private ones into a single `{config.mask_label}` row with "
+        "no name, path, branch or url, so the totals include private code "
+        "without naming any of it. `./scripts/gallery` regenerates the lot.",
+        "",
+        "Each layout is drawn twice, over languages by default and over "
+        "projects with `--by project`. Every SVG carries its own light and "
+        "dark palette, so they follow the GitHub theme.",
+        "",
+    ]
+
+    for layout in render_pkg.LAYOUT_NAMES:
+        lines += [f"## {layout}", "", SHAPES.get(layout, f"The `{layout}` layout."), ""]
+        for by in render_pkg.SUBJECT_NAMES:
+            path = svg_path(layout, by)
+            lines += [
+                f"**{SUBJECTS.get(by, by).capitalize()}** (`{path.name}`)",
+                "",
+                f"![{layout}, {SUBJECTS.get(by, by)}]({link(path)})",
+                "",
+            ]
+
+    text = output_path(GALLERY, BASENAME, render_pkg.get("txt"))
+    markdown = output_path(GALLERY, BASENAME, render_pkg.get("md"))
+    html = output_path(GALLERY, BASENAME, render_pkg.get("html"))
+    lines += [
+        "## The text formats",
+        "",
+        "The same run, rendered for reading rather than embedding.",
+        "",
+        f"- [{markdown.name}]({link(markdown)}), the Markdown report, which "
+        "GitHub renders inline",
+        f"- [{text.name}]({link(text)}), the plain text report, for a terminal",
+        f"- [{html.name}]({link(html)}), one self-contained page in light and "
+        "dark. GitHub shows its source, so download it to look",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def main() -> int:
+    if sys.argv[1:]:
+        print(
+            "scripts/gallery takes no arguments. The flags that keep the gallery "
+            "anonymous are fixed.\nFor an ad-hoc run, use clocwork itself.",
+            file=sys.stderr,
+        )
+        return 2
+
+    try:
+        config = load_config(ROOT / DEFAULT_CONFIG_NAME)
+    except ConfigError as exc:
+        print(f"gallery: {exc}", file=sys.stderr)
+        return 2
+
+    DOCS.mkdir(parents=True, exist_ok=True)
+    status = clocwork_main(ARGV, use_config_cli=False)
+    if status == 2:
+        print("gallery: clocwork could not run; nothing written", file=sys.stderr)
+        return 2
+
+    INDEX.write_text(index_markdown(config), encoding="utf-8")
+
+    # The index gets published too, so the audit covers it rather than
+    # trusting it for having come out of the same config.
+    files = [*written_files(), INDEX]
+    problems = audit(config, files)
+    if problems:
+        for path in files:
+            path.unlink()
+        print(file=sys.stderr)
+        for problem in problems:
+            print(f"gallery: {problem}", file=sys.stderr)
+        print(
+            f"gallery: deleted {len(files)} file(s); nothing here is safe to "
+            "commit",
+            file=sys.stderr,
+        )
+        return 2
+
+    print(f"  wrote {INDEX}", file=sys.stderr)
+    print(
+        f"gallery: {len(files)} file(s) under {DOCS.relative_to(ROOT)}, "
+        "audited clean",
+        file=sys.stderr,
+    )
+    return status
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

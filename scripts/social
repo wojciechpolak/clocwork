@@ -1,0 +1,234 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Wojciech Polak
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+"""Draw the repo's GitHub social preview. The SVG first, then the PNG from it.
+
+The picture is the `banner` layout, so the drawing lives in
+clocwork/render/svg/banner.py and the suite covers it. What is left here is the
+heading, the invented counts, the mat, and the rasteriser.
+
+Reads no config. The counts come from showcase(), so there is nothing private
+to audit for, and nothing here is a true count. model.py still sums the totals
+from those counts rather than taking a figure typed in.
+
+The banner is framed, and a rounded corner rasterises to transparency, which
+lands on whatever colour the viewer composites against. Every rasteriser below
+flattens onto white.
+"""
+
+from __future__ import annotations
+
+import struct
+import subprocess
+import sys
+from datetime import UTC, datetime
+from pathlib import Path
+from shutil import which
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from clocwork import render as render_pkg  # noqa: E402
+from clocwork.model import LangCount, ProjectReport, Report  # noqa: E402
+from clocwork.render import DARK_BG, LIGHT_BG  # noqa: E402
+from clocwork.render.svg import banner  # noqa: E402
+
+DOCS = ROOT / "docs"
+SVG_PATH = DOCS / "social-preview.svg"
+PNG_PATH = DOCS / "social-preview.png"
+
+# The image GitHub is handed, and the margin nothing is drawn in.
+WIDTH = 1280
+HEIGHT = 640
+SAFE = 40
+
+# The largest banner that clears SAFE on all four edges. The layout is locked
+# to 2:1, so the shorter axis decides: 640 - 2*SAFE leaves 560, and 560 doubled
+# is narrower than 1280 - 2*SAFE. The horizontal margin is therefore wider than
+# SAFE rather than the vertical one being thinner, which is the way round that
+# keeps the guarantee. Centring is what turns those two numbers into offsets.
+CARD_WIDTH = min(WIDTH - 2 * SAFE,
+                 (HEIGHT - 2 * SAFE) * banner.WIDTH // banner.HEIGHT)
+# The layout derives its height from its width, so this reads that back with
+# the same expression rather than deciding it a second time here.
+CARD_HEIGHT = round(banner.HEIGHT * CARD_WIDTH / banner.WIDTH)
+
+BACKGROUND = "white"
+
+# The mat is the card's own background, so the two agree in either theme. Both
+# halves, or a dark page gets a white band around a dark card. The colours are
+# render.LIGHT_BG / DARK_BG rather than a third spelling of them, since those
+# are already what `.bg` is fitted against.
+MAT_STYLE = f"""
+    .mat {{ fill: {LIGHT_BG}; }}
+    @media (prefers-color-scheme: dark) {{
+      .mat {{ fill: {DARK_BG}; }}
+    }}
+"""
+
+TITLE = "clocwork"
+SUBTITLE = "Lines of code across every project you own"
+
+
+def showcase() -> Report:
+    """Invented projects. Ten languages with distinct linguist colours."""
+    projects = [
+        ("web-console", {
+            "TypeScript": LangCount(files=412, blank=9_100, comment=4_800,
+                                    code=318_540),
+            "CSS": LangCount(files=88, blank=1_900, comment=520, code=24_115),
+            "HTML": LangCount(files=64, blank=740, comment=180, code=9_330),
+        }),
+        ("ingest", {
+            "Go": LangCount(files=186, blank=4_200, comment=3_100, code=132_480),
+            "JSON": LangCount(files=22, blank=0, comment=0, code=7_902),
+        }),
+        ("analytics", {
+            "Python": LangCount(files=241, blank=6_700, comment=5_400,
+                                code=164_210),
+            "Markdown": LangCount(files=46, blank=1_100, comment=0, code=12_640),
+        }),
+        ("scheduler", {
+            "Rust": LangCount(files=132, blank=3_400, comment=2_900, code=94_405),
+            "Bourne Shell": LangCount(files=18, blank=390, comment=460,
+                                      code=6_120),
+        }),
+        ("codec", {
+            "C": LangCount(files=74, blank=2_100, comment=3_800, code=74_260),
+            "Markdown": LangCount(files=12, blank=280, comment=0, code=3_180),
+        }),
+        ("toolbelt", {
+            "Python": LangCount(files=118, blank=2_800, comment=2_200,
+                                code=68_900),
+            "Bourne Shell": LangCount(files=41, blank=820, comment=1_040,
+                                      code=18_460),
+        }),
+        ("site", {
+            "TypeScript": LangCount(files=96, blank=1_800, comment=700,
+                                    code=61_300),
+            "CSS": LangCount(files=24, blank=430, comment=110, code=6_845),
+            "HTML": LangCount(files=31, blank=360, comment=90, code=4_120),
+            "Markdown": LangCount(files=58, blank=1_400, comment=0, code=15_070),
+        }),
+        ("relay", {
+            "Go": LangCount(files=64, blank=1_500, comment=1_100, code=42_140),
+            "Rust": LangCount(files=38, blank=900, comment=760, code=24_000),
+            "JSON": LangCount(files=9, blank=0, comment=0, code=4_320),
+        }),
+    ]
+    return Report(
+        generated_at=datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC"),
+        projects=[ProjectReport(name=name, path=name, languages=languages)
+                  for name, languages in projects],
+    )
+
+
+def matte(card: str, width: int, height: int) -> str:
+    """Centre the card on the canvas, leaving SAFE clear on every edge.
+
+    banner.render returns a whole SVG document, so this re-roots rather than
+    edits: the card becomes a nested <svg> placed at the inset, keeping its own
+    viewBox, and the outer element takes over the canvas and the accessible
+    name. Nothing inside the layout has to know it moved, which is the point --
+    the drawing stays shipped code with the suite behind it, and the margin is
+    the script's business alone.
+
+    A nested <svg> shares the document's styles, so the card's <style> block
+    still reaches the mat's own rule; MAT_STYLE only adds one.
+    """
+    root, body = card.split("\n", 1)
+    if not root.startswith("<svg "):
+        raise ValueError("the banner did not start with an <svg> element")
+    label = root.split('aria-label="', 1)[1].rsplit('">', 1)[0]
+    x = (WIDTH - width) // 2
+    y = (HEIGHT - height) // 2
+    return "\n".join([
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" '
+        f'height="{HEIGHT}" viewBox="0 0 {WIDTH} {HEIGHT}" role="img" '
+        f'aria-label="{label}">',
+        f"<style>{MAT_STYLE}</style>",
+        f'<rect class="mat" fill="{LIGHT_BG}" width="{WIDTH}" height="{HEIGHT}"/>',
+        f'<svg x="{x}" y="{y}" width="{width}" height="{height}" '
+        f'viewBox="0 0 {width} {height}">',
+        body.rstrip("\n"),
+        "</svg>",
+        "",
+    ])
+
+
+# librsvg first, because the picture was drawn against it.
+RASTERISERS = (
+    ("rsvg-convert", lambda src, out: ["rsvg-convert", "-w", str(WIDTH),
+                                       "-h", str(HEIGHT), "-b", BACKGROUND,
+                                       "-o", str(out), str(src)]),
+    ("resvg", lambda src, out: ["resvg", "--width", str(WIDTH),
+                                "--height", str(HEIGHT),
+                                "--background", BACKGROUND, str(src), str(out)]),
+    ("magick", lambda src, out: ["magick", "-background", BACKGROUND,
+                                 "-density", "384", str(src),
+                                 "-flatten", "-resize", f"{WIDTH}x{HEIGHT}",
+                                 str(out)]),
+)
+
+
+def rasterise(src: Path, out: Path) -> str | None:
+    """The name of whichever rasteriser ran, or None if none is installed."""
+    for name, argv in RASTERISERS:
+        if not which(name):
+            continue
+        result = subprocess.run(argv(src, out), capture_output=True, text=True)
+        if result.returncode == 0:
+            return name
+        print(f"social: {name} failed: {result.stderr.strip()}", file=sys.stderr)
+    return None
+
+
+def png_size(path: Path) -> tuple[int, int]:
+    """Width and height out of the IHDR chunk, rather than trusting the flags."""
+    header = path.read_bytes()[:24]
+    if header[:8] != b"\x89PNG\r\n\x1a\n":
+        raise ValueError("not a PNG")
+    return struct.unpack(">II", header[16:24])
+
+
+def main() -> int:
+    if sys.argv[1:]:
+        print("scripts/social takes no arguments.", file=sys.stderr)
+        return 2
+
+    card = render_pkg.render(
+        "svg", showcase(), layout="banner", width=CARD_WIDTH, title=TITLE,
+        subtitle=SUBTITLE,
+    )
+    svg = matte(card, CARD_WIDTH, CARD_HEIGHT)
+
+    DOCS.mkdir(parents=True, exist_ok=True)
+    SVG_PATH.write_text(svg, encoding="utf-8")
+    print(f"  wrote {SVG_PATH.relative_to(ROOT)}", file=sys.stderr)
+
+    tool = rasterise(SVG_PATH, PNG_PATH)
+    if tool is None:
+        print(
+            "social: no rasteriser found, so only the SVG was written.\n"
+            "        Install one of: librsvg (brew install librsvg), resvg, "
+            "imagemagick.",
+            file=sys.stderr,
+        )
+        return 1
+
+    width, height = png_size(PNG_PATH)
+    if (width, height) != (WIDTH, HEIGHT):
+        print(
+            f"social: {tool} wrote {width}x{height}, not {WIDTH}x{HEIGHT}",
+            file=sys.stderr,
+        )
+        return 2
+
+    print(f"  wrote {PNG_PATH.relative_to(ROOT)} ({width}x{height}, via {tool})",
+          file=sys.stderr)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

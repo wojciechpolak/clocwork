@@ -1,0 +1,70 @@
+[project]
+name = "clocwork"
+description = "Aggregate cloc line counts across a fixed list of projects into one report."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Wojciech Polak" }]
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+dependencies = []
+dynamic = ["version"]
+
+# Kept in step with `clocwork.__url__`, which is what the generated reports
+# link; a test asserts the two agree.
+[project.urls]
+Homepage = "https://github.com/wojciechpolak/clocwork"
+Repository = "https://github.com/wojciechpolak/clocwork"
+
+[project.scripts]
+clocwork = "clocwork.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.14",
+    "ty>=0.0.1a24",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "clocwork/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["clocwork"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "clocwork",
+    "tests",
+    "bin",
+    "scripts",
+    "projects.example.toml",
+    "README.md",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+# The scripts have no .py extension, so `ruff check .` walks straight past
+# them. They are Python and they are as easy to get wrong as anything in the
+# package. Listed here rather than as arguments in scripts/check, so the
+# editor, CI and a bare `ruff check .` all see the same set of files.
+extend-include = ["bin/*", "scripts/*"]
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort
+    "UP",     # pyupgrade
+    "B",      # bugbear
+    "SIM",    # flake8-simplify
+    "RUF",    # ruff-specific
+]
+
+[tool.ty.environment]
+python-version = "3.11"

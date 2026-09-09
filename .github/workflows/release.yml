@@ -1,0 +1,273 @@
+name: Release
+
+# A `v*` tag builds the sdist and wheel, proves they came from this tree, and
+# publishes a GitHub release whose notes are the matching CHANGELOG.md section.
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  # Never cancel a release. A run interrupted between the upload step and
+  # the publish step leaves a draft holding assets nobody can see.
+  cancel-in-progress: false
+
+jobs:
+  # Runs first, so a bad tag fails in seconds instead of after the suite.
+  verify:
+    name: Tag, version, and changelog
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
+      version: ${{ steps.release.outputs.version }}
+      prerelease: ${{ steps.release.outputs.prerelease }}
+    steps:
+      - name: Checkout the tagged tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Validate the tag against the package and the changelog
+        id: release
+        run: |
+          set -euo pipefail
+          tag="$GITHUB_REF_NAME"
+
+          if ! printf '%s' "$tag" | grep -Eq '^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z.-]+)?$'; then
+            echo "::error::$tag is not a semantic version tag"
+            exit 1
+          fi
+
+          # A pre-release tag names the version it is a candidate for.
+          # v0.9.0-rc.1 ships package version 0.9.0 and publishes 0.9.0's
+          # notes, so everything below uses the base version.
+          version="${tag#v}"
+          version="${version%%[-+]*}"
+          if [ "$tag" = "v$version" ]; then
+            prerelease=false
+          else
+            prerelease=true
+          fi
+
+          # Reads the same file hatchling reads, so the version is written in
+          # one place. A regex over the text needs no venv and no install.
+          package_version="$(
+            python3 - <<'PY'
+          import pathlib
+          import re
+
+          text = pathlib.Path("clocwork/__init__.py").read_text()
+          match = re.search(r'^__version__ = "([^"]+)"$', text, re.M)
+          print(match.group(1) if match else "")
+          PY
+          )"
+          if [ "$package_version" != "$version" ]; then
+            echo "::error::tag $tag does not match clocwork.__version__ $package_version"
+            exit 1
+          fi
+
+          # Match the exact version heading, never a position in the file.
+          # CHANGELOG.md carries a rolling `## [Unreleased]` section above the
+          # version being released, and none of it belongs in the notes.
+          # `index(...) == 1` rather than a regex, which would need the dots in
+          # a version number escaped.
+          heading="$(awk -v marker="## [$version] - " '
+            index($0, marker) == 1 { print; exit }
+          ' CHANGELOG.md)"
+          if [ -z "$heading" ]; then
+            echo "::error::CHANGELOG.md has no '## [$version] - <date>' heading"
+            exit 1
+          fi
+
+          # A shell `case` pattern has no repeat count, so the date spells out
+          # eight digit classes. This is the check that rejects
+          # `## [0.9.0] - unreleased`.
+          case "$heading" in
+            "## [$version] - "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) ;;
+            *)
+              echo "::error::CHANGELOG heading for $version is not dated: $heading"
+              exit 1
+              ;;
+          esac
+
+          notes="$RUNNER_TEMP/release-notes.md"
+          awk -v heading="$heading" '
+            index($0, heading) == 1 { found = 1; next }
+            !found { next }
+            index($0, "## [") == 1 { exit }
+            body || NF { body = 1; print }
+          ' CHANGELOG.md > "$notes"
+          if ! grep -q '[^[:space:]]' "$notes"; then
+            echo "::error::the CHANGELOG section for $version is empty"
+            exit 1
+          fi
+
+          echo "--- release notes for $tag ---"
+          cat "$notes"
+
+          {
+            echo "tag=$tag"
+            echo "version=$version"
+            echo "prerelease=$prerelease"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Upload the release notes
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: clocwork-release-notes
+          path: ${{ runner.temp }}/release-notes.md
+          if-no-files-found: error
+
+  # The same workflow the branch runs, rather than a second copy of ruff, ty
+  # and pytest. A local `uses:` runs at the caller's ref, so this tests the
+  # tagged tree.
+  gate:
+    name: Quality gate
+    needs: verify
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ci.yml
+
+  build:
+    name: Build and attest the distribution
+    needs: [verify, gate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      # attest-build-provenance signs the attestation (id-token) and stores it
+      # on the repository (attestations).
+      id-token: write
+      attestations: write
+    steps:
+      - name: Checkout the tagged tree
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version-file: '.python-version'
+
+      # Two builds, compared, so the checksums below describe bytes anyone can
+      # reproduce from this source. SOURCE_DATE_EPOCH is the tagged commit's
+      # date. Zip cannot store timestamps before 1980, and a real date lets
+      # someone rebuild these files outside this runner.
+      - name: Build twice and compare
+        run: |
+          set -euo pipefail
+          SOURCE_DATE_EPOCH="$(git log -1 --pretty=%ct HEAD)"
+          export SOURCE_DATE_EPOCH
+          echo "SOURCE_DATE_EPOCH=$SOURCE_DATE_EPOCH"
+          uv build --out-dir dist
+          uv build --out-dir "$RUNNER_TEMP/rebuilt"
+          diff -r dist "$RUNNER_TEMP/rebuilt"
+          # uv writes a `.gitignore` into its output directory. Deleting it
+          # after the comparison leaves dist/ holding the release files alone,
+          # so every `dist/*` below means those files.
+          rm -f dist/.gitignore
+
+      # `verify` checked the source. This checks the two files the build
+      # produced. A wheel whose --version contradicts its tag stops here.
+      - name: Check the built files carry the tagged version
+        env:
+          VERSION: ${{ needs.verify.outputs.version }}
+        run: |
+          set -euo pipefail
+          test -f "dist/clocwork-$VERSION.tar.gz"
+          test -f "dist/clocwork-$VERSION-py3-none-any.whl"
+          reported="$(uv run --no-project \
+            --with "dist/clocwork-$VERSION-py3-none-any.whl" \
+            clocwork --version)"
+          printf '%s\n' "$reported"
+          test "$reported" = "clocwork $VERSION"
+
+      # The manifest goes in before the attestation step, so the attestation
+      # covers it. It lists the sdist and the wheel, never itself.
+      - name: Write the checksum manifest
+        run: |
+          set -euo pipefail
+          cd dist
+          sha256sum clocwork-*.tar.gz clocwork-*.whl > SHA256SUMS
+          sha256sum --check SHA256SUMS
+          cat SHA256SUMS
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+        with:
+          subject-path: dist/*
+
+      - name: Upload the distribution
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: clocwork-dist
+          path: dist/
+          if-no-files-found: error
+
+  # This job never checks out the repository. The notes and the assets
+  # arrive as artifacts, so there is no working tree to get wrong.
+  publish:
+    name: Publish the GitHub release
+    needs: [verify, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TAG: ${{ needs.verify.outputs.tag }}
+      PRERELEASE: ${{ needs.verify.outputs.prerelease }}
+    steps:
+      - name: Download the release notes
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: clocwork-release-notes
+          path: notes
+
+      - name: Download the distribution
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: clocwork-dist
+          path: dist
+
+      - name: Ensure a draft release exists
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            if ! gh release view "$TAG" --json isDraft --jq '.isDraft' | grep -qx true; then
+              echo "::error::release $TAG is already published; its assets are frozen and cannot be rewritten"
+              exit 1
+            fi
+            gh release edit "$TAG" --title "$TAG" --notes-file notes/release-notes.md
+            exit 0
+          fi
+          if [ "$PRERELEASE" = true ]; then
+            gh release create "$TAG" --draft --verify-tag --prerelease \
+              --title "$TAG" --notes-file notes/release-notes.md
+          else
+            gh release create "$TAG" --draft --verify-tag \
+              --title "$TAG" --notes-file notes/release-notes.md
+          fi
+
+      - name: Attach the distribution and its checksums
+        run: gh release upload "$TAG" dist/* --clobber
+
+      # Nothing above this step is visible. After it the release is public,
+      # and with immutable releases enabled its assets and tag are frozen.
+      - name: Publish the complete release
+        run: gh release edit "$TAG" --draft=false

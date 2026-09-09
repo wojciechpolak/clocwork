@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="92" viewBox="0 0 840 92" role="img" aria-label="Lines of code by language: TypeScript, YAML, JSON, Go, JavaScript, Python">
+<style>
+    .neutral { fill: #737a87; }
+    .neutral-track { fill: #8b929e; }
+    .l0 { fill: #3178c6; }
+    .l1 { fill: #cb171e; }
+    .l2 { fill: #8a8a8a; }
+    .l3 { fill: #00a1c9; }
+    .l4 { fill: #a4930e; }
+    .l5 { fill: #3572a5; }
+    .l6 { fill: #178600; }
+    .l7 { fill: #0b56db; }
+    .l8 { fill: #626262; }
+    .l9 { fill: #c6538c; }
+    .l10 { fill: #7251a5; }
+    .l11 { fill: #3aa576; }
+    .l12 { fill: #3da1a2; }
+    .l13 { fill: #515f98; }
+    .l14 { fill: #445ab5; }
+    .l15 { fill: #e34c26; }
+    .l16 { fill: #42a0ad; }
+    .l17 { fill: #54a81e; }
+    .l18 { fill: #b19043; }
+    .l19 { fill: #6b4dbc; }
+    .l20 { fill: #3fa674; }
+    .l21 { fill: #4ba63f; }
+    .l22 { fill: #a04422; }
+    .l23 { fill: #3da295; }
+    .l24 { fill: #8243b1; }
+    .l25 { fill: #3da298; }
+    .l26 { fill: #0063b1; }
+    .l27 { fill: #427819; }
+    .l28 { fill: #4a6670; }
+    .l29 { fill: #cf7f00; }
+    .l30 { fill: #6ba23d; }
+    .l31 { fill: #949494; }
+    .l32 { fill: #40a1aa; }
+    .l33 { fill: #b14387; }
+    .l34 { fill: #7c98a7; }
+    .l35 { fill: #6151bd; }
+    .l36 { fill: #0298c3; }
+    .l37 { fill: #3fa667; }
+    .l38 { fill: #3fa655; }
+    .l39 { fill: #b17543; }
+    .l40 { fill: #3fa684; }
+    .l41 { fill: #4398b1; }
+</style>
+<circle class="l0" cx="6" cy="13" r="4" fill="#3178c6"/>
+<text x="16" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">TypeScript</text>
+<text x="87.28" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">179k  29.8%</text>
+<circle class="l1" cx="170.88" cy="13" r="4" fill="#cb171e"/>
+<text x="180.88" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">YAML</text>
+<text x="223.48" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">95.0k  15.8%</text>
+<circle class="l2" cx="310.82" cy="13" r="4" fill="#8a8a8a"/>
+<text x="320.82" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">JSON</text>
+<text x="360.42" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">85.4k  14.2%</text>
+<circle class="l3" cx="447.76" cy="13" r="4" fill="#00a1c9"/>
+<text x="457.76" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">Go</text>
+<text x="478.88" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">55.7k  9.3%</text>
+<circle class="l4" cx="562.48" cy="13" r="4" fill="#a4930e"/>
+<text x="572.48" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">JavaScript</text>
+<text x="643.76" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">32.1k  5.3%</text>
+<circle class="l5" cx="6" cy="35" r="4" fill="#3572a5"/>
+<text x="16" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">Python</text>
+<text x="61.36" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">30.9k  5.1%</text>
+<circle class="l6" cx="142.43" cy="35" r="4" fill="#178600"/>
+<text x="152.43" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">C#</text>
+<text x="173.55" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">18.5k  3.1%</text>
+<circle class="l7" cx="252.09" cy="35" r="4" fill="#0b56db"/>
+<text x="262.09" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">Markdown</text>
+<text x="331.21" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">17.4k  2.9%</text>
+<circle class="l8" cx="412.28" cy="35" r="4" fill="#626262"/>
+<text x="422.28" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">C</text>
+<text x="436.68" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">17.4k  2.9%</text>
+<circle class="l9" cx="517.75" cy="35" r="4" fill="#c6538c"/>
+<text x="527.75" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">SCSS</text>
+<text x="567.35" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">12.0k  2.0%</text>
+<circle class="l10" cx="648.42" cy="35" r="4" fill="#7251a5"/>
+<text x="658.42" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">CSS</text>
+<text x="689.62" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">9.4k  1.6%</text>
+<circle class="l11" cx="6" cy="57" r="4" fill="#3aa576"/>
+<text x="16" y="61" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">Vuejs Component</text>
+<text x="122.2" y="61" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">7.7k  1.3%</text>
+<circle class="l12" cx="197" cy="57" r="4" fill="#3da1a2"/>
+<text x="207" y="61" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">PO File</text>
+<text x="256.44" y="61" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">6.6k  1.1%</text>
+<circle class="l13" cx="328.71" cy="57" r="4" fill="#515f98"/>
+<text x="338.71" y="61" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">PHP</text>
+<text x="369.91" y="61" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">5.5k  0.9%</text>
+<circle class="l14" cx="447.24" cy="57" r="4" fill="#445ab5"/>
+<text x="457.24" y="61" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">yacc</text>
+<text x="490.12" y="61" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">3.6k  0.6%</text>
+<circle class="l15" cx="567.45" cy="57" r="4" fill="#e34c26"/>
+<text x="577.45" y="61" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">HTML</text>
+<text x="620.05" y="61" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">3.3k  0.6%</text>
+<circle class="l16" cx="697.38" cy="57" r="4" fill="#42a0ad"/>
+<text x="707.38" y="61" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">Astro</text>
+<text x="746.02" y="61" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">3.1k  0.5%</text>
+<circle class="l17" cx="6" cy="79" r="4" fill="#54a81e"/>
+<text x="16" y="83" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">Bourne Shell</text>
+<text x="97.36" y="83" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">2.9k  0.5%</text>
+<circle class="l18" cx="174.69" cy="79" r="4" fill="#b19043"/>
+<text x="184.69" y="83" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">SVG</text>
+<text x="215.89" y="83" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">2.0k  0.3%</text>
+<circle class="l19" cx="293.22" cy="79" r="4" fill="#6b4dbc"/>
+<text x="303.22" y="83" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">C/C++ Header</text>
+<text x="391.54" y="83" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">1.9k  0.3%</text>
+<circle class="l20" cx="466.34" cy="79" r="4" fill="#3fa674"/>
+<text x="476.34" y="83" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">XSLT</text>
+<text x="515.94" y="83" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">1.3k  0.2%</text>
+<circle class="l21" cx="590.74" cy="79" r="4" fill="#4ba63f"/>
+<text x="600.74" y="83" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">lex</text>
+<text x="624.26" y="83" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">1.0k  0.2%</text>
+<text x="695.06" y="83" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">+20 more</text>
+</svg>

@@ -1,0 +1,116 @@
+# Which projects to count.
+#
+# Copy this file to projects.toml and edit that copy, which is gitignored, so
+# your real project list never leaves your machine. Each project's `repo` is
+# either a directory on this machine or a URL clocwork clones for you. A
+# relative directory is relative to `root`, which is itself relative to this
+# file, so the tool works from any working directory. Run `./bin/clocwork`
+# after editing.
+
+[defaults]
+root = ".."          # sibling directories of this repo
+# cache = "clones"   # where cloned repos are kept between runs. Defaults to
+                     # $XDG_CACHE_HOME/clocwork, else ~/.cache/clocwork. A
+                     # relative path resolves against this file, and --cache
+                     # beats both. Only remote repos use it
+vcs = "git"          # "git" counts only git-tracked files; "none" walks the tree
+private = false      # true hides a project unless --private, --all, or --mask
+exclude_dirs = []    # extra directory names to skip, e.g. ["vendor", "fixtures"]
+exclude_langs = []   # languages to drop from the report, e.g. ["JSON", "Markdown"]
+cloc_args = []       # anything else to pass through to cloc
+
+# Lock files are git-tracked, so they count by default and can dominate the
+# totals. In a mid-sized project, package-lock.json alone runs to ~22k "JSON"
+# lines. Drop them with exclude_langs, above for everything or per project.
+
+# The stand-in name --mask prints instead of a private project's own.
+mask_label = "UNDISCLOSED"
+
+# Default values for command-line flags, so the run you make most often can be
+# a bare `clocwork`. Anything you type still wins over anything here. Keys use
+# underscores rather than hyphens, so svg_rows, not svg-rows.
+#
+# Visibility is deliberately not settable here. --all, --private, --mask,
+# --mask-each and --only decide what leaves this machine, so they stay on the
+# line you type rather than sitting in a file you cannot see while typing it.
+# Naming one of them below is an error, not a quiet no-op.
+[cli]
+# format = "all"       # txt, md, html, svg, comma separated, or "all"
+# layout = "all"       # SVG shapes: card, strip, bar, bars, donut, or "all"
+# by = "all"           # what the SVG draws over: language, project, or "all"
+# sections = "all"     # summary tables: project, language, or "all"
+# sort = "code"        # code, name or files
+# detail = false       # true is --detail. --no-detail turns it off for one run
+# svg_rows = 8         # rows an SVG labels. 0 labels every row
+# svg_width = 560      # pixels, at least 200. Omit and each layout picks its own
+# basename = "report"  # stem for the txt, md and html files
+# out = "out"          # a relative path resolves against this file
+# timeout = 300        # seconds allowed per cloc run
+# quiet = false        # true is --quiet. --no-quiet turns it off for one run
+# fetch = true         # false is --no-fetch: count the clones already cached
+#                      # without contacting the remotes. --fetch turns it back
+#                      # on for one run
+
+# The common case: a sibling directory, counted under its own name.
+[[project]]
+repo = "feed-reader"
+
+# `name` is what the report shows; it defaults to the directory name.
+[[project]]
+repo = "aoc"
+name = "Advent of Code"
+
+# `url` is optional. Give one and the name becomes a link in the Markdown and
+# HTML reports; the TXT report and the SVG card are unchanged. http:// or
+# https:// only.
+[[project]]
+repo = "hello-world"
+url = "https://github.com/example/hello-world"
+
+# A repo that is a URL is cloned into the cache and counted from there, which
+# is how clocwork runs where nothing is checked out, a CI job for instance. The
+# clone is shallow and single branch, and it stays put, so the next run fetches
+# instead of cloning again.
+#
+# `repo` is what git clones and `url` is where a reader goes. GitHub spells the
+# two almost alike, other hosts need not, so neither is guessed from the other.
+[[project]]
+repo = "https://github.com/example/repo.git"
+url = "https://github.com/example/repo"
+
+# `branch` picks what to clone. Without it you get whatever the remote calls
+# its default branch. It applies to a URL only: clocwork will not check out a
+# branch in a working tree of yours.
+[[project]]
+repo = "git@github.com:example/internal-tools.git"
+branch = "develop"
+name = "Internal Tools"
+private = true
+
+# A per-project value replaces the default outright. It does not merge.
+[[project]]
+repo = "web-client"
+exclude_langs = ["JSON", "SVG"]
+exclude_dirs = ["vendor"]
+
+# Nested paths work, and so do absolute or ~-prefixed ones.
+[[project]]
+repo = "python/legacy-app"
+name = "Legacy App"
+
+# Not a git repo, so walk the directory tree instead of asking git.
+[[project]]
+repo = "~/experiments/prototype"
+vcs = "none"
+
+# A plain run leaves private projects out. `--private` counts only these,
+# `--all` counts them by name, and `--mask` merges every one of them into a
+# single anonymous row with no name, no path and no branch.
+[[project]]
+repo = "client-work/acme"
+name = "Acme Rewrite"
+private = true
+
+[[project]]
+repo = "unreleased-thing"
+private = true

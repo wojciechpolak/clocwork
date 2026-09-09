@@ -1,0 +1,25 @@
+{"header" : {
+  "cloc_url"           : "github.com/AlDanial/cloc",
+  "cloc_version"       : "2.10",
+  "n_files"            : 13,
+  "n_lines"            : 1650},
+"Go" :{
+  "nFiles": 10,
+  "blank": 100,
+  "comment": 50,
+  "code": 1000},
+"JSON" :{
+  "nFiles": 2,
+  "blank": 0,
+  "comment": 0,
+  "code": 400},
+"Markdown" :{
+  "nFiles": 1,
+  "blank": 10,
+  "comment": 0,
+  "code": 90},
+"SUM": {
+  "blank": 110,
+  "comment": 50,
+  "code": 1490,
+  "nFiles": 13} }

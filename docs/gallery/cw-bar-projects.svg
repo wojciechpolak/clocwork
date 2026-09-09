@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="840" height="32" viewBox="0 0 840 32" role="img" aria-label="Project mix across 17 projects">
+<style>
+    .neutral { fill: #737a87; }
+    .neutral-track { fill: #8b929e; }
+    .l0 { fill: #5854be; }
+    .l1 { fill: #b14e43; }
+    .l2 { fill: #4368b1; }
+    .l3 { fill: #3fa655; }
+    .l4 { fill: #70a23d; }
+    .l5 { fill: #4375b1; }
+    .l6 { fill: #889b3b; }
+    .l7 { fill: #b14356; }
+    .l8 { fill: #a6953f; }
+    .l9 { fill: #b1439f; }
+    .l10 { fill: #7c46b8; }
+    .l11 { fill: #b1438f; }
+    .l12 { fill: #409faa; }
+    .l13 { fill: #5ba63f; }
+    .l14 { fill: #51a63f; }
+    .l15 { fill: #3da298; }
+    .l16 { fill: #b18743; }
+</style>
+<rect class="neutral-track" fill="#8b929e" x="2" y="2" width="836" height="8" rx="4.0"/>
+<clipPath id="barclip"><rect x="2" y="2" width="836" height="8" rx="4.0"/></clipPath>
+<g id="bar" clip-path="url(#barclip)">
+<rect class="l0" x="2.00" y="2" width="211.10" height="8" fill="#5854be"/>
+<rect class="l1" x="213.10" y="2" width="124.41" height="8" fill="#b14e43"/>
+<rect class="l2" x="337.51" y="2" width="120.81" height="8" fill="#4368b1"/>
+<rect class="l3" x="458.32" y="2" width="96.35" height="8" fill="#3fa655"/>
+<rect class="l4" x="554.67" y="2" width="46.18" height="8" fill="#70a23d"/>
+<rect class="l5" x="600.85" y="2" width="42.08" height="8" fill="#4375b1"/>
+<rect class="l6" x="642.93" y="2" width="31.83" height="8" fill="#889b3b"/>
+<rect class="l7" x="674.76" y="2" width="28.72" height="8" fill="#b14356"/>
+<rect class="l8" x="703.48" y="2" width="28.41" height="8" fill="#a6953f"/>
+<rect class="l9" x="731.89" y="2" width="26.27" height="8" fill="#b1439f"/>
+<rect class="l10" x="758.16" y="2" width="25.97" height="8" fill="#7c46b8"/>
+<rect class="l11" x="784.13" y="2" width="17.76" height="8" fill="#b1438f"/>
+<rect class="l12" x="801.89" y="2" width="11.01" height="8" fill="#409faa"/>
+<rect class="l13" x="812.90" y="2" width="11.00" height="8" fill="#5ba63f"/>
+<rect class="l14" x="823.90" y="2" width="6.91" height="8" fill="#51a63f"/>
+<rect class="l15" x="830.81" y="2" width="6.74" height="8" fill="#3da298"/>
+</g>
+<text x="2" y="28" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">UNDISCLOSED 25%  ·  DUD 15%  ·  RetroFlops 14%  ·  Magic Link SSO 12%  ·  gLifestream 6%  ·  Time Tracker 5%  ·  Cheetah News 4%  ·  other 20%</text>
+</svg>

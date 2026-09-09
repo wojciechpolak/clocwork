@@ -1,0 +1,9 @@
+projects.toml
+
+out/
+__pycache__/
+*.pyc
+.idea/
+.venv/
+.DS_Store
+docs/social-preview.*

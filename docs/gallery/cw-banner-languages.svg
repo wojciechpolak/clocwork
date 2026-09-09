@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-label="Every project: Lines of code by language: 600 340 across 17 projects">
+<style>
+    .bg { fill: #ffffff; stroke: #e3e6ea; }
+    .title { fill: #6b7280; }
+    .figure { fill: #1c1e21; }
+    .label { fill: #1c1e21; }
+    .muted { fill: #6b7280; }
+    .track { fill: #eceff3; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0f1115; stroke: #262b33; }
+      .title { fill: #9aa3af; }
+      .figure { fill: #e6e8eb; }
+      .label { fill: #e6e8eb; }
+      .muted { fill: #9aa3af; }
+      .track { fill: #22262e; }
+    }
+    .l0 { fill: #3178c6; }
+    .l1 { fill: #cb171e; }
+    .l2 { fill: #8a8a8a; }
+    .l3 { fill: #00add8; }
+    .l4 { fill: #f1e05a; }
+    .l5 { fill: #3572a5; }
+    .l6 { fill: #178600; }
+    .l7 { fill: #083fa1; }
+    .l8 { fill: #555555; }
+    .l9 { fill: #c6538c; }
+    .l10 { fill: #563d7c; }
+    .l11 { fill: #41b883; }
+    .l12 { fill: #3da1a2; }
+    .l13 { fill: #4f5d95; }
+    .l14 { fill: #4358b1; }
+    .l15 { fill: #e34c26; }
+    .l16 { fill: #42a0ad; }
+    .l17 { fill: #89e051; }
+    .l18 { fill: #b19043; }
+    .l19 { fill: #6143b1; }
+    .l20 { fill: #3fa674; }
+    .l21 { fill: #4ba63f; }
+    .l22 { fill: #9c4221; }
+    .l23 { fill: #3da295; }
+    .l24 { fill: #8243b1; }
+    .l25 { fill: #3da298; }
+    .l26 { fill: #0060ac; }
+    .l27 { fill: #427819; }
+    .l28 { fill: #384d54; }
+    .l29 { fill: #e38c00; }
+    .l30 { fill: #6ba23d; }
+    .l31 { fill: #9e9e9e; }
+    .l32 { fill: #40a1aa; }
+    .l33 { fill: #b14387; }
+    .l34 { fill: #d1dbe0; }
+    .l35 { fill: #5443b1; }
+    .l36 { fill: #0298c3; }
+    .l37 { fill: #3fa667; }
+    .l38 { fill: #3fa655; }
+    .l39 { fill: #b17543; }
+    .l40 { fill: #3fa684; }
+    .l41 { fill: #4398b1; }
+    @media (prefers-color-scheme: dark) {
+      .l0 { fill: #3178c6; }
+      .l1 { fill: #cb171e; }
+      .l2 { fill: #8a8a8a; }
+      .l3 { fill: #00add8; }
+      .l4 { fill: #f1e05a; }
+      .l5 { fill: #3572a5; }
+      .l6 { fill: #178600; }
+      .l7 { fill: #0b56db; }
+      .l8 { fill: #626262; }
+      .l9 { fill: #c6538c; }
+      .l10 { fill: #7251a5; }
+      .l11 { fill: #41b883; }
+      .l12 { fill: #43b0b1; }
+      .l13 { fill: #515f98; }
+      .l14 { fill: #445ab5; }
+      .l15 { fill: #e34c26; }
+      .l16 { fill: #43a3b1; }
+      .l17 { fill: #89e051; }
+      .l18 { fill: #b19043; }
+      .l19 { fill: #6b4dbc; }
+      .l20 { fill: #43b17c; }
+      .l21 { fill: #50b143; }
+      .l22 { fill: #a04422; }
+      .l23 { fill: #43b1a3; }
+      .l24 { fill: #8243b1; }
+      .l25 { fill: #43b1a6; }
+      .l26 { fill: #0063b1; }
+      .l27 { fill: #427819; }
+      .l28 { fill: #4a6670; }
+      .l29 { fill: #e38c00; }
+      .l30 { fill: #75b143; }
+      .l31 { fill: #9e9e9e; }
+      .l32 { fill: #43a8b1; }
+      .l33 { fill: #b14387; }
+      .l34 { fill: #d1dbe0; }
+      .l35 { fill: #6151bd; }
+      .l36 { fill: #0298c3; }
+      .l37 { fill: #43b16e; }
+      .l38 { fill: #43b15b; }
+      .l39 { fill: #b17543; }
+      .l40 { fill: #43b18d; }
+      .l41 { fill: #4398b1; }
+    }
+</style>
+<rect class="bg" fill="#ffffff" stroke="#e3e6ea" x="0.5" y="0.5" width="1279" height="639" rx="10"/>
+<text x="72" y="206.5" class="figure" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="104.0" font-weight="700" text-anchor="start">Every project</text>
+<text x="72" y="249.5" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="27.0" font-weight="400" text-anchor="start">public and private together, the private ones masked</text>
+<text x="72" y="307.5" class="title" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="18.0" font-weight="600" text-anchor="start">LINES OF CODE</text>
+<text x="72" y="387.5" class="figure" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="68.0" font-weight="700" text-anchor="start">600 340</text>
+<text x="72" y="421.5" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">17 projects  ·  4 253 files  ·  42 languages</text>
+<path class="l0" d="M985.00 112.00A150.00 150.00 0 0 1 1128.13 306.87L1088.06 294.30A108.00 108.00 0 0 0 985.00 154.00Z" fill="#3178c6"/>
+<path class="l1" d="M1128.13 306.87A150.00 150.00 0 0 1 1025.43 406.45L1014.11 366.00A108.00 108.00 0 0 0 1088.06 294.30Z" fill="#cb171e"/>
+<path class="l2" d="M1025.43 406.45A150.00 150.00 0 0 1 897.74 384.01L922.17 349.85A108.00 108.00 0 0 0 1014.11 366.00Z" fill="#8a8a8a"/>
+<path class="l3" d="M897.74 384.01A150.00 150.00 0 0 1 845.01 315.88L884.21 300.79A108.00 108.00 0 0 0 922.17 349.85Z" fill="#00add8"/>
+<path class="l4" d="M845.01 315.88A150.00 150.00 0 0 1 835.07 266.69L877.05 265.38A108.00 108.00 0 0 0 884.21 300.79Z" fill="#f1e05a"/>
+<path class="l5" d="M835.07 266.69A150.00 150.00 0 0 1 841.33 218.87L881.56 230.95A108.00 108.00 0 0 0 877.05 265.38Z" fill="#3572a5"/>
+<path class="l6" d="M841.33 218.87A150.00 150.00 0 0 1 852.30 192.06L889.46 211.64A108.00 108.00 0 0 0 881.56 230.95Z" fill="#178600"/>
+<path class="l7" d="M852.30 192.06A150.00 150.00 0 0 1 867.20 169.14L900.19 195.14A108.00 108.00 0 0 0 889.46 211.64Z" fill="#083fa1"/>
+<path class="l8" d="M867.20 169.14A150.00 150.00 0 0 1 885.95 149.36L913.68 180.90A108.00 108.00 0 0 0 900.19 195.14Z" fill="#555555"/>
+<path class="l9" d="M885.95 149.36A150.00 150.00 0 0 1 900.80 137.86L924.37 172.62A108.00 108.00 0 0 0 913.68 180.90Z" fill="#c6538c"/>
+<path class="l10" d="M900.80 137.86A150.00 150.00 0 0 1 913.38 130.20L933.43 167.11A108.00 108.00 0 0 0 924.37 172.62Z" fill="#563d7c"/>
+<path class="l11" d="M913.38 130.20A150.00 150.00 0 0 1 924.23 124.86L941.24 163.26A108.00 108.00 0 0 0 933.43 167.11Z" fill="#41b883"/>
+<path class="l12" d="M924.23 124.86A150.00 150.00 0 0 1 933.77 121.02L948.11 160.49A108.00 108.00 0 0 0 941.24 163.26Z" fill="#3da1a2"/>
+<path class="l13" d="M933.77 121.02A150.00 150.00 0 0 1 941.90 118.32L953.97 158.55A108.00 108.00 0 0 0 948.11 160.49Z" fill="#4f5d95"/>
+<path class="l14" d="M941.90 118.32A150.00 150.00 0 0 1 947.33 116.81L957.88 157.46A108.00 108.00 0 0 0 953.97 158.55Z" fill="#4358b1"/>
+<path class="l15" d="M947.33 116.81A150.00 150.00 0 0 1 952.44 115.58L961.56 156.57A108.00 108.00 0 0 0 957.88 157.46Z" fill="#e34c26"/>
+<path class="l16" d="M952.44 115.58A150.00 150.00 0 0 1 957.25 114.59L965.02 155.86A108.00 108.00 0 0 0 961.56 156.57Z" fill="#42a0ad"/>
+<path class="l17" d="M957.25 114.59A150.00 150.00 0 0 1 961.80 113.80L968.30 155.30A108.00 108.00 0 0 0 965.02 155.86Z" fill="#89e051"/>
+<path class="l18" d="M961.80 113.80A150.00 150.00 0 0 1 964.88 113.36L970.52 154.98A108.00 108.00 0 0 0 968.30 155.30Z" fill="#b19043"/>
+<path class="l19" d="M964.88 113.36A150.00 150.00 0 0 1 967.76 112.99L972.59 154.72A108.00 108.00 0 0 0 970.52 154.98Z" fill="#6143b1"/>
+<path class="l20" d="M967.76 112.99A150.00 150.00 0 0 1 969.80 112.77L974.06 154.56A108.00 108.00 0 0 0 972.59 154.72Z" fill="#3fa674"/>
+<path class="l21" d="M969.80 112.77A150.00 150.00 0 0 1 971.38 112.62L975.20 154.45A108.00 108.00 0 0 0 974.06 154.56Z" fill="#4ba63f"/>
+<path class="l22" d="M971.38 112.62A150.00 150.00 0 0 1 972.88 112.49L976.27 154.35A108.00 108.00 0 0 0 975.20 154.45Z" fill="#9c4221"/>
+<path class="l23" d="M972.88 112.49A150.00 150.00 0 0 1 974.29 112.38L977.29 154.28A108.00 108.00 0 0 0 976.27 154.35Z" fill="#3da295"/>
+<path class="l24" d="M974.29 112.38A150.00 150.00 0 0 1 975.69 112.29L978.29 154.21A108.00 108.00 0 0 0 977.29 154.28Z" fill="#8243b1"/>
+<text x="985" y="270" class="figure" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="46.0" font-weight="700" text-anchor="middle">600k</text>
+<text x="985" y="302" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="middle">lines</text>
+<rect class="track" fill="#eceff3" x="72" y="470" width="1136" height="20" rx="10.0"/>
+<clipPath id="barclip"><rect x="72" y="470" width="1136" height="20" rx="10.0"/></clipPath>
+<g id="bar" clip-path="url(#barclip)">
+<rect class="l0" x="72.00" y="470" width="338.92" height="20" fill="#3178c6"/>
+<rect class="l1" x="410.92" y="470" width="179.74" height="20" fill="#cb171e"/>
+<rect class="l2" x="590.66" y="470" width="161.59" height="20" fill="#8a8a8a"/>
+<rect class="l3" x="752.25" y="470" width="105.33" height="20" fill="#00add8"/>
+<rect class="l4" x="857.58" y="470" width="60.77" height="20" fill="#f1e05a"/>
+<rect class="l5" x="918.34" y="470" width="58.38" height="20" fill="#3572a5"/>
+<rect class="l6" x="976.73" y="470" width="34.97" height="20" fill="#178600"/>
+<rect class="l7" x="1011.70" y="470" width="33.00" height="20" fill="#083fa1"/>
+<rect class="l8" x="1044.70" y="470" width="32.89" height="20" fill="#555555"/>
+<rect class="l9" x="1077.59" y="470" width="22.65" height="20" fill="#c6538c"/>
+<rect class="l10" x="1100.24" y="470" width="17.76" height="20" fill="#563d7c"/>
+<rect class="l11" x="1118.00" y="470" width="14.58" height="20" fill="#41b883"/>
+<rect class="l12" x="1132.58" y="470" width="12.40" height="20" fill="#3da1a2"/>
+<rect class="l13" x="1144.98" y="470" width="10.33" height="20" fill="#4f5d95"/>
+<rect class="l14" x="1155.31" y="470" width="6.80" height="20" fill="#4358b1"/>
+<rect class="l15" x="1162.11" y="470" width="6.34" height="20" fill="#e34c26"/>
+<rect class="l16" x="1168.44" y="470" width="5.91" height="20" fill="#42a0ad"/>
+<rect class="l17" x="1174.35" y="470" width="5.57" height="20" fill="#89e051"/>
+<rect class="l18" x="1179.92" y="470" width="3.75" height="20" fill="#b19043"/>
+<rect class="l19" x="1183.68" y="470" width="3.50" height="20" fill="#6143b1"/>
+<rect class="l20" x="1187.18" y="470" width="2.47" height="20" fill="#3fa674"/>
+<rect class="l21" x="1189.65" y="470" width="1.91" height="20" fill="#4ba63f"/>
+<rect class="l22" x="1191.57" y="470" width="1.81" height="20" fill="#9c4221"/>
+<rect class="l23" x="1193.37" y="470" width="1.71" height="20" fill="#3da295"/>
+<rect class="l24" x="1195.09" y="470" width="1.68" height="20" fill="#8243b1"/>
+<rect class="l25" x="1196.77" y="470" width="1.55" height="20" fill="#3da298"/>
+<rect class="l26" x="1198.31" y="470" width="1.24" height="20" fill="#0060ac"/>
+<rect class="l27" x="1199.55" y="470" width="1.23" height="20" fill="#427819"/>
+<rect class="l28" x="1200.78" y="470" width="1.14" height="20" fill="#384d54"/>
+<rect class="l29" x="1201.92" y="470" width="1.11" height="20" fill="#e38c00"/>
+<rect class="l30" x="1203.03" y="470" width="1.10" height="20" fill="#6ba23d"/>
+<rect class="l31" x="1204.13" y="470" width="1.06" height="20" fill="#9e9e9e"/>
+<rect class="l32" x="1205.19" y="470" width="0.87" height="20" fill="#40a1aa"/>
+<rect class="l33" x="1206.06" y="470" width="0.58" height="20" fill="#b14387"/>
+</g>
+<circle class="l0" cx="78" cy="514" r="6" fill="#3178c6"/>
+<text x="90" y="520" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="500" text-anchor="start">TypeScript</text>
+<text x="204.8" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">29.8%</text>
+<circle class="l1" cx="296.8" cy="514" r="6" fill="#cb171e"/>
+<text x="308.8" y="520" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="500" text-anchor="start">YAML</text>
+<text x="375.8" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">15.8%</text>
+<circle class="l2" cx="463.2" cy="514" r="6" fill="#8a8a8a"/>
+<text x="475.2" y="520" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="500" text-anchor="start">JSON</text>
+<text x="537.2" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">14.2%</text>
+<circle class="l3" cx="624.6" cy="514" r="6" fill="#00add8"/>
+<text x="636.6" y="520" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="500" text-anchor="start">Go</text>
+<text x="667.8" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">9.3%</text>
+<circle class="l4" cx="748.4" cy="514" r="6" fill="#f1e05a"/>
+<text x="760.4" y="520" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="500" text-anchor="start">JavaScript</text>
+<text x="875.2" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">5.3%</text>
+<circle class="l5" cx="955.8" cy="514" r="6" fill="#3572a5"/>
+<text x="967.8" y="520" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="500" text-anchor="start">Python</text>
+<text x="1039.4" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">5.1%</text>
+<text x="1109.4" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">+36 more</text>
+<text x="72" y="590" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="18.0" font-weight="400" text-anchor="start">clocwork · cloc · 2026-09-09</text>
+</svg>
