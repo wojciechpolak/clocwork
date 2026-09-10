@@ -45,6 +45,13 @@ and this project follows
 
 ### Fixed
 
+- Every run failed under cloc 1.98, which is what `apt install cloc` gives you
+  on Ubuntu and therefore what most CI has. clocwork passed `--hide-rate`, and
+  1.98 closes the header that flag shortens with a trailing comma, so the
+  output was not JSON and every project was skipped as unreadable. The flag
+  only ever suppressed fields that `parse_cloc_json` drops along with the rest
+  of the header, so it is gone rather than worked around.
+
 - A `repo` ending in `..` took its name from that segment, so
   `repo = "../thing/.."` produced a project called `..`. The name now comes off
   the normalised directory.

@@ -700,7 +700,7 @@ class TestMain(unittest.TestCase):
 
     def test_date_none_makes_every_format_reproducible(self):
         # The stamp is the only thing a rerun over unchanged code changes by
-        # itself, cloc's own timings having been dropped by --hide-rate. With
+        # itself, cloc's own timings never leaving parse_cloc_json. With
         # no stamp the whole output directory is a function of the counts, so
         # a scheduled run only commits when the code moved.
         second = self.tmp / "again"

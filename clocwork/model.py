@@ -16,8 +16,8 @@ from . import __version__
 
 # How precise the generated-at stamp is. `none` leaves it out altogether, which
 # is what makes two runs over unchanged code write identical bytes. The stamp is
-# the last thing in the output that a rerun changes by itself, now that
-# `--hide-rate` keeps cloc's own timings out of the JSON.
+# the only thing in the output that a rerun changes by itself: cloc's own
+# timings sit in the header, which parse_cloc_json drops.
 DATE_PRECISIONS = ("minute", "day", "month", "none")
 DEFAULT_DATE = "minute"
 

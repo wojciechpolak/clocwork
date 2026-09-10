@@ -45,8 +45,15 @@ class TestArgv(unittest.TestCase):
         (tmp / ".git").mkdir()
         argv = collect.build_argv(spec(tmp))
         self.assertIn("--vcs=git", argv)
-        self.assertIn("--hide-rate", argv)
         self.assertEqual(argv[-1], ".")
+
+    def test_hide_rate_is_never_passed(self):
+        # cloc 1.98, which is what apt installs on Ubuntu, closes the header
+        # with a trailing comma when it is shortened by --hide-rate, and no
+        # JSON parser accepts that. parse_cloc_json drops the header anyway,
+        # so there is nothing to gain by asking.
+        tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        self.assertNotIn("--hide-rate", collect.build_argv(spec(tmp)))
 
     def test_plain_directory_skips_vcs(self):
         tmp = Path(self.enterContext(tempfile.TemporaryDirectory()))
