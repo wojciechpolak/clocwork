@@ -228,7 +228,7 @@ one repository per line:
     path: .clocwork-cache
     key: clocwork-${{ github.run_id }}
     restore-keys: clocwork-
-- uses: wojciechpolak/clocwork@v0
+- uses: wojciechpolak/clocwork@v1
   with:
     repos: |
       https://github.com/you/one
@@ -255,11 +255,10 @@ The action installs `cloc` and runs the tool out of its own checkout. There is
 no `pip install` step, because clocwork has no dependencies to install. Output
 lands in `out/` unless `out` says otherwise.
 
-`@v0` follows the newest 0.x release and moves when one ships. `@v0.9.2` pins
+`@v1` follows the newest 1.x release and moves when one ships. `@v1.0.0` pins
 one release, and a full commit SHA is the hardened form, which is what this
-repository's own workflows use for everything they call. There is no `@v1` yet,
-and no Marketplace listing: `uses: owner/repo@ref` needs neither, and the
-listing waits for 1.0.0.
+repository's own workflows use for everything they call. `@v0` still points at
+the last 0.x release and will not move again.
 
 `repos: .` counts the repository the workflow is already standing in, which is
 the degenerate case of the same thing and needs `actions/checkout` in front of
@@ -267,7 +266,7 @@ it:
 
 ```yaml
 - uses: actions/checkout@v7
-- uses: wojciechpolak/clocwork@v0
+- uses: wojciechpolak/clocwork@v1
   with:
     repos: .
     format: md,svg
@@ -279,7 +278,7 @@ remote counted this way takes its default branch. For a `name`, a `url`,
 instead:
 
 ```yaml
-- uses: wojciechpolak/clocwork@v0
+- uses: wojciechpolak/clocwork@v1
   with:
     config: projects.toml
     out: docs
@@ -351,7 +350,7 @@ Without the action, the whole thing is three lines:
 ```yaml
 - run: |
     sudo apt-get install -y cloc
-    pip install https://github.com/wojciechpolak/clocwork/releases/download/v0.9.2/clocwork-0.9.2-py3-none-any.whl
+    pip install https://github.com/wojciechpolak/clocwork/releases/download/v1.0.0/clocwork-1.0.0-py3-none-any.whl
     clocwork --repo . --out out
 ```
 

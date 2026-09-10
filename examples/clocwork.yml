@@ -49,7 +49,7 @@ jobs:
       # the ones you embed, point out at a gitignored directory and copy from
       # it.
       - name: Count
-        uses: wojciechpolak/clocwork@v0
+        uses: wojciechpolak/clocwork@v1
         with:
           config: projects.toml
           cache: .clocwork-cache

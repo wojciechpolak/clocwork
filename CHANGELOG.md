@@ -8,6 +8,16 @@ and this project follows
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-09-10
+
+The interface is settled, which is all this number says. The action's inputs,
+the command line flags and the `projects.toml` schema are what 1.x will keep,
+and `@v1` now follows the line the way `@v0` followed 0.x. `@v0` stays on
+0.9.2 and will not move again.
+
+Nothing here changes what the tool does. Everything a 0.9.2 run wrote, a 1.0.0
+run writes identically.
+
 ### Changed
 
 - `LICENSE` is now the GPL-3.0 text verbatim, and the section 7 additional

@@ -272,15 +272,17 @@ jobs:
       - name: Publish the complete release
         run: gh release edit "$TAG" --draft=false
 
-  # A workflow using the action pins `clocwork@v0` and follows the 0.x line, so
-  # the tag has to move once a release is real. The major comes off the version
-  # rather than being written down, which makes this v0 today and v1 the day
-  # 1.0.0 ships, with nothing to remember. A pre-release never moves it, for the
-  # reason the tap does not take one either.
+  # A workflow pinning `clocwork@v1` follows the 1.x line, so the tag has to
+  # move when a release lands. The major comes off the version rather than
+  # being written down here, so 1.0.0 started v1 without an edit and 2.0.0 will
+  # start v2. A major left behind stops moving, so v0 still points at 0.9.2.
   #
-  # Re-running an old tag from the Actions UI would otherwise walk the tag
-  # backwards and break every workflow that followed it, so this job asks which
-  # release is newest before it moves anything.
+  # A pre-release moves nothing. A candidate for a version is not that version,
+  # which is why the tap refuses one too.
+  #
+  # Re-running an old tag from the Actions UI would walk the tag backwards and
+  # break every workflow following it, so this job asks which release is newest
+  # before it moves anything.
   major-tag:
     name: Move the floating major tag
     needs: [verify, publish]
