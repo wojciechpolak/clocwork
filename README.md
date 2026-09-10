@@ -70,6 +70,8 @@ which is why `uv run clocwork` needs no flags either.
 
 ```
 uv run clocwork                        # every format into out/
+uv run clocwork --repo .               # count this directory, no config file
+uv run clocwork --repo URL             # ...or clone that repo and count it
 uv run clocwork --detail               # add the per-project, per-language breakdown
 uv run clocwork --stdout md            # Markdown to stdout, write nothing
 uv run clocwork --only aoc --detail    # one project
@@ -120,6 +122,20 @@ Exit status is `0` when everything counted, `1` when some projects were skipped
 (the report is still written), and `2` when the run could not start.
 
 ## Configuration
+
+`--repo` skips this whole section. It takes what a `repo` key takes, a
+directory or a clone URL, it repeats, and given one clocwork opens no config
+file at all:
+
+```
+clocwork --repo . --stdout md
+clocwork --repo ../aoc --repo https://github.com/you/repo
+```
+
+What it cannot say is anything about a particular project. A `name`, a `url`,
+`private`, `branch` and the exclusions all need a file, and a remote counted
+this way takes the remote's default branch. `--out` defaults to `out/` in the
+directory you typed the command in.
 
 The repository ships `projects.example.toml`. Copy it and edit the copy:
 
@@ -199,32 +215,133 @@ line, or a directory name, so a token in a CI clone URL cannot end up in `out/`.
 
 ### In a GitHub workflow
 
-Remote repos are the point of this. A runner has nothing checked out, so there
-is nothing for a directory to point at.
-
-Commit a `projects.toml` listing the repos you want counted, then:
+There is an action at the root of this repository. Counting repositories the
+runner has not checked out is what the tool was built for, and it is one step,
+one repository per line:
 
 ```yaml
-- uses: actions/checkout@v5
-- run: |
-    sudo apt-get install -y cloc
-    pip install "clocwork @ git+https://github.com/wojciechpolak/clocwork"
 - uses: actions/cache@v4
   with:
     path: .clocwork-cache
-    key: clocwork-${{ hashFiles('projects.toml') }}
-- run: >
-    clocwork --config projects.toml --out out
-    --cache .clocwork-cache --format svg --layout card
+    key: clocwork-${{ github.run_id }}
+    restore-keys: clocwork-
+- uses: wojciechpolak/clocwork@v0
+  with:
+    repos: |
+      https://github.com/you/one
+      https://github.com/you/two
+      https://github.com/you/three
+    cache: .clocwork-cache
+    format: svg
+    layout: bars,strip
 ```
 
-Cache the clone directory and the job clones once and fetches on every run
-after. Point `--cache` at a path inside the workspace, since that is the only
-place `actions/cache` can see.
+Nothing is checked out to be counted. clocwork clones each one shallowly, and
+the cache is what makes the second run fetch a commit instead of cloning three
+repositories again. Point `cache` at a path inside the workspace, since that is
+the only place `actions/cache` can see.
 
-Both flags are explicit above so the job decides its own workspace layout.
-Left out, `--config` reads `projects.toml` from the working directory and
-`--out` writes beside whichever config file it found.
+The key above changes every run and `restore-keys` falls back to the newest one
+there is, so each run starts from the last one's clones and saves what it ends
+with. A fixed key would be written once and never updated, because GitHub does
+not overwrite a key that already exists. Listing the repositories in a
+`projects.toml` instead lets you key on that file, which is what
+[examples/clocwork.yml](examples/clocwork.yml) does.
+
+The action installs `cloc` and runs the tool out of its own checkout. There is
+no `pip install` step, because clocwork has no dependencies to install. Output
+lands in `out/` unless `out` says otherwise.
+
+`@v0` follows the newest 0.x release and moves when one ships. `@v0.9.2` pins
+one release, and a full commit SHA is the hardened form, which is what this
+repository's own workflows use for everything they call. There is no `@v1` yet,
+and no Marketplace listing: `uses: owner/repo@ref` needs neither, and the
+listing waits for 1.0.0.
+
+`repos: .` counts the repository the workflow is already standing in, which is
+the degenerate case of the same thing and needs `actions/checkout` in front of
+it:
+
+```yaml
+- uses: actions/checkout@v5
+- uses: wojciechpolak/clocwork@v0
+  with:
+    repos: .
+    format: md,svg
+```
+
+`repos` reads no config file, so it carries no per-project settings and a
+remote counted this way takes its default branch. For a `name`, a `url`,
+`private`, `branch` or the exclusions, commit a `projects.toml` and name it
+instead:
+
+```yaml
+- uses: wojciechpolak/clocwork@v0
+  with:
+    config: projects.toml
+    out: docs
+```
+
+Anything without an input of its own goes through `args`, one argument per
+line, so a value with spaces needs no quoting:
+
+```yaml
+    args: |
+      --detail
+      --svg-rows
+      12
+      --mask
+```
+
+Visibility lives there on purpose. `--all`, `--private`, `--mask` and
+`--mask-each` decide what leaves the machine, and that decision should be
+readable on the line you wrote rather than assembled from a mapping table.
+
+clocwork writes files and never edits your README. Committing them is yours to
+do, with `stefanzweifel/git-auto-commit-action` or with git itself:
+
+```yaml
+- run: |
+    git config user.name github-actions[bot]
+    git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+    git add docs/cw-*
+    git diff --cached --quiet || git commit -m 'Update line counts'
+    git push
+```
+
+The job needs `permissions: contents: write` for that, and that block cannot
+grant what the repository withholds: if Settings, Actions, General, Workflow
+permissions says read-only, the push fails with a 403 however the workflow
+spells it. Every card carries the date it was drawn unless you pass
+`--date none`, so otherwise a run always produces a real diff.
+
+[examples/clocwork.yml](examples/clocwork.yml) is all of that in one file: a
+weekly job that counts a list of repositories, draws two cards, and commits
+them only when something moved. Copy it to `.github/workflows/clocwork.yml`,
+commit a `projects.toml` beside it, and embed the files it writes. It carries
+the two settings that decide whether the first run works, which are the
+repository's workflow permissions and the fact that a fresh `schedule` never
+fires until its first Monday.
+
+The action reports `out-dir`, `files` (one absolute path per line) and
+`skipped`. A project that could not be counted is a warning and the report is
+written anyway, which is the program's own contract one level up. Set
+`fail-on-skipped: true` to make it an error instead.
+
+Linux and macOS runners are supported. On Windows the action refuses in its
+first step rather than half working, since that runner's bash has neither
+`sudo` nor `brew` to install `cloc` with. Python 3.11 or newer is required; the
+action finds an interpreter itself and points you at `actions/setup-python`
+when the image has nothing new enough.
+
+Without the action, the whole thing is three lines:
+
+```yaml
+- run: |
+    sudo apt-get install -y cloc
+    pip install https://github.com/wojciechpolak/clocwork/releases/download/v0.9.1/clocwork-0.9.1-py3-none-any.whl
+    clocwork --repo . --out out
+```
 
 ### Public and private projects
 

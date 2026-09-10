@@ -1,0 +1,73 @@
+# A weekly job that counts the repositories in projects.toml, draws the cards
+# and commits them. Copy it to .github/workflows/clocwork.yml, commit a
+# projects.toml beside it, and embed what it writes. Take it and relicense it.
+# The inputs are documented in clocwork's README.
+#
+# Two settings decide whether a first run works, and neither is in this file.
+# Workflow permissions, under Settings -> Actions -> General, has to say "Read
+# and write permissions" or the push fails with a 403. And a new schedule does
+# not fire until it next comes due, so start this one by hand with
+# `gh workflow run clocwork.yml`.
+
+name: Line counts
+
+on:
+  schedule:
+    - cron: '17 5 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: clocwork
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  count:
+    name: Count and commit the cards
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      # Inside the workspace, the only place actions/cache can see. The key
+      # follows the project list, so adding a repository starts a new cache.
+      - name: Restore the clone cache
+        uses: actions/cache@v4
+        with:
+          path: .clocwork-cache
+          key: clocwork-${{ hashFiles('projects.toml') }}
+          restore-keys: clocwork-
+
+      # clocwork clones what it counts, so none of it is checked out here.
+      # layout and by multiply, so one call writes four files. To commit only
+      # the ones you embed, point out at a gitignored directory and copy from
+      # it.
+      - name: Count
+        uses: wojciechpolak/clocwork@v0
+        with:
+          config: projects.toml
+          cache: .clocwork-cache
+          out: assets
+          format: svg
+          layout: bars,strip
+          by: all
+
+      # `date = "none"` under [cli] in projects.toml drops the generated-at
+      # stamp, so this commits only when a count changed.
+      - name: Commit whatever changed
+        run: |
+          set -euo pipefail
+          # 41898282 is the account id of github-actions[bot], which is what
+          # links the commit to that account.
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/cw-*.svg
+          git diff --cached --quiet && exit 0
+          git commit -m 'Update line counts'
+          git push

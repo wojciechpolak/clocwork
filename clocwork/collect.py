@@ -52,9 +52,13 @@ def cloc_version() -> str | None:
 
 def build_argv(spec: ProjectSpec) -> list[str]:
     # --quiet drops the progress preamble that would otherwise precede the JSON.
-    # --hide-rate strips elapsed_seconds/lines_per_second from the header, which
-    # is what makes two runs over unchanged code byte-identical.
-    argv = [CLOC, "--json", "--quiet", "--hide-rate"]
+    #
+    # --hide-rate is missing on purpose. It strips elapsed_seconds and
+    # lines_per_second from the header, which parse_cloc_json drops along with
+    # the rest of the header anyway, and cloc 1.98 closes that shortened header
+    # with a trailing comma, which no JSON parser accepts. 1.98 is what apt
+    # installs on Ubuntu, so the flag bought nothing and cost every run there.
+    argv = [CLOC, "--json", "--quiet"]
     if spec.use_git:
         # Ask git for the file list, so untracked and .gitignore'd paths
         # (node_modules, dist, build output) never reach cloc.

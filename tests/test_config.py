@@ -49,6 +49,14 @@ exclude_langs = ["Markdown"]
         path = write_config('[[project]]\nrepo = "some/nested/thing"\n')
         self.assertEqual(config.load(path).projects[0].name, "thing")
 
+    def test_a_repo_ending_in_dot_dot_names_the_directory(self):
+        # Path('/code/thing/..').name is '..', and a project called '..' is a
+        # report nobody can read back.
+        path = write_config(
+            '[defaults]\nroot = "/code"\n\n[[project]]\nrepo = "thing/.."\n'
+        )
+        self.assertEqual(config.load(path).projects[0].name, "code")
+
     def test_relative_paths_resolve_against_root_next_to_config(self):
         path = write_config(
             '[defaults]\nroot = ".."\n\n[[project]]\nrepo = "dotfiles"\n'
@@ -372,6 +380,103 @@ class TestCliTable(unittest.TestCase):
     def test_cache_is_refused_because_it_is_read_first(self):
         with self.assertRaisesRegex(config.ConfigError, "read before"):
             self.load('[cli]\ncache = "/c"\n')
+
+    def test_repo_is_refused_because_it_is_the_config_less_mode(self):
+        with self.assertRaisesRegex(config.ConfigError, "reads no config file"):
+            self.load('[cli]\nrepo = "alpha"\n')
+
+
+class TestFromRepos(unittest.TestCase):
+    """--repo values become projects with no file behind them."""
+
+    REPO = "https://example.com/acme/hello-world.git"
+
+    def one(self, value: str, **kwargs):
+        return config.from_repos([value], **kwargs).projects[0]
+
+    def test_a_directory_becomes_one_project(self):
+        spec = self.one("alpha", root=Path("/code"))
+        self.assertEqual(spec.name, "alpha")
+        self.assertEqual(spec.path, Path("/code/alpha"))
+        self.assertIsNone(spec.repo)
+        self.assertFalse(spec.is_remote)
+
+    def test_a_relative_value_follows_the_working_directory(self):
+        tmp = Path(tempfile.mkdtemp()).resolve()
+        with mock.patch.object(Path, "cwd", return_value=tmp):
+            self.assertEqual(self.one("alpha").path, tmp / "alpha")
+
+    def test_dot_is_the_directory_you_are_in(self):
+        # Path('/w/x') / '.' drops the segment, so this one needs no help. The
+        # assertion is here because an empty name is what it would look like.
+        spec = self.one(".", root=Path("/code/thing"))
+        self.assertEqual(spec.name, "thing")
+        self.assertNotEqual(spec.name, "")
+
+    def test_dot_dot_names_the_parent_rather_than_itself(self):
+        self.assertEqual(self.one("..", root=Path("/code/thing")).name, "code")
+
+    def test_a_url_becomes_a_clone_under_the_cache(self):
+        spec = self.one(self.REPO, cache="/c")
+        self.assertEqual(spec.repo, self.REPO)
+        self.assertTrue(spec.is_remote)
+        self.assertEqual(spec.path, fetch.cache_path(Path("/c"), self.REPO))
+
+    def test_the_name_comes_off_the_url(self):
+        self.assertEqual(self.one(self.REPO, cache="/c").name, "hello-world")
+
+    def test_surrounding_space_is_dropped(self):
+        self.assertEqual(self.one("  alpha  ", root=Path("/code")).name, "alpha")
+
+    def test_a_dangerous_value_is_rejected_and_the_error_names_the_flag(self):
+        for value in ("ext::sh -c whoami", "ftp://h/a", "file:///opt/a", "-x"):
+            with self.subTest(value=value):
+                with self.assertRaises(config.ConfigError) as raised:
+                    config.from_repos([value])
+                message = str(raised.exception)
+                self.assertIn("--repo", message)
+                # There is no table to name, so the message must not invent one.
+                self.assertNotIn("[[project]]", message)
+
+    def test_a_blank_value_is_rejected(self):
+        for value in ("", "   "):
+            with (
+                self.subTest(value=value),
+                self.assertRaisesRegex(config.ConfigError, "--repo"),
+            ):
+                config.from_repos([value])
+
+    def test_two_values_with_one_name_collide(self):
+        with self.assertRaisesRegex(config.ConfigError, "duplicate project name"):
+            config.from_repos(["a/docs", "b/docs"], root=Path("/code"))
+
+    def test_there_is_no_config_to_inherit_from(self):
+        cfg = config.from_repos(["alpha"], root=Path("/code"))
+        self.assertEqual(cfg.cli, {})
+        self.assertEqual(cfg.mask_label, "UNDISCLOSED")
+        spec = cfg.projects[0]
+        self.assertFalse(spec.private)
+        self.assertEqual(spec.vcs, "git")
+        self.assertEqual(spec.exclude_langs, [])
+        self.assertIsNone(spec.url)
+        self.assertIsNone(spec.branch)
+
+    def test_out_anchors_to_the_working_directory(self):
+        # source names the file that would have been read, and its one reader
+        # is the --out default, so out/ lands where the command was typed.
+        tmp = Path(tempfile.mkdtemp()).resolve()
+        with mock.patch.object(Path, "cwd", return_value=tmp):
+            cfg = config.from_repos(["alpha"])
+        self.assertEqual(cfg.source, tmp / "projects.toml")
+        self.assertEqual(cfg.source.parent, tmp)
+
+    def test_the_cache_flag_decides_where_clones_go(self):
+        cfg = config.from_repos([self.REPO], cache="/c")
+        self.assertEqual(cfg.cache, Path("/c"))
+
+    def test_several_values_keep_their_order(self):
+        cfg = config.from_repos(["a", "b", "c"], root=Path("/code"))
+        self.assertEqual([spec.name for spec in cfg.projects], ["a", "b", "c"])
 
 
 if __name__ == "__main__":

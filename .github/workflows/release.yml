@@ -272,6 +272,51 @@ jobs:
       - name: Publish the complete release
         run: gh release edit "$TAG" --draft=false
 
+  # A workflow using the action pins `clocwork@v0` and follows the 0.x line, so
+  # the tag has to move once a release is real. The major comes off the version
+  # rather than being written down, which makes this v0 today and v1 the day
+  # 1.0.0 ships, with nothing to remember. A pre-release never moves it, for the
+  # reason the tap does not take one either.
+  #
+  # Re-running an old tag from the Actions UI would otherwise walk the tag
+  # backwards and break every workflow that followed it, so this job asks which
+  # release is newest before it moves anything.
+  major-tag:
+    name: Move the floating major tag
+    needs: [verify, publish]
+    if: needs.verify.outputs.prerelease == 'false'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TAG: ${{ needs.verify.outputs.tag }}
+      VERSION: ${{ needs.verify.outputs.version }}
+    steps:
+      - name: Point the major tag at this release
+        run: |
+          set -euo pipefail
+          major="v${VERSION%%.*}"
+
+          latest="$(gh release view --json tagName --jq '.tagName')"
+          if [ "$latest" != "$TAG" ]; then
+            echo "::notice::$latest is newer than $TAG, so $major stays where it is"
+            exit 0
+          fi
+
+          # GITHUB_SHA on a tag push is the commit the tag names, so there is
+          # no ref to dereference and no working tree to check out.
+          if gh api "repos/$GH_REPO/git/ref/tags/$major" >/dev/null 2>&1; then
+            gh api --method PATCH "repos/$GH_REPO/git/refs/tags/$major" \
+              -f sha="$GITHUB_SHA" -F force=true
+          else
+            gh api --method POST "repos/$GH_REPO/git/refs" \
+              -f ref="refs/tags/$major" -f sha="$GITHUB_SHA"
+          fi
+          echo "$major -> $GITHUB_SHA ($TAG)"
+
   # The formula points at release assets, so it cannot be written until those
   # are downloadable. A pre-release tag never reaches the tap: `brew install`
   # resolves to whatever the tap holds, and a candidate for a version is not

@@ -46,3 +46,83 @@ jobs:
 
       - name: Run pytest
         run: uv run pytest
+
+  # tests/test_action.py reads action.yml; this job is the only thing that runs
+  # it. macOS is here so something exercises `brew install cloc`, the way
+  # homebrew.yml proves both install paths before shipping either.
+  action:
+    name: Composite action (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Count this repository with no config file
+        id: count
+        uses: ./
+        with:
+          repos: .
+          out: action-out
+          format: md,svg
+          layout: card,strip
+
+      - name: The action wrote what it says it wrote
+        env:
+          OUT_DIR: ${{ steps.count.outputs.out-dir }}
+          FILES: ${{ steps.count.outputs.files }}
+          SKIPPED: ${{ steps.count.outputs.skipped }}
+        run: |
+          set -euo pipefail
+          test "$SKIPPED" = "false"
+          test -f "$OUT_DIR/cw-report.md"
+          test -f "$OUT_DIR/cw-card-languages.svg"
+          test -f "$OUT_DIR/cw-strip-languages.svg"
+          # --format was md,svg, so this one must be absent.
+          test ! -f "$OUT_DIR/cw-report.txt"
+          grep -F 'Python' "$OUT_DIR/cw-report.md"
+          grep -Fx "$OUT_DIR/cw-report.md" <<< "$FILES"
+
+      # One project that is there and one that is not. All of them failing
+      # would be exit 2 and a dead run; one of them failing is exit 1, which is
+      # the case worth pinning: the files are written and the step stays green.
+      - name: Write a config with one project missing
+        run: |
+          set -euo pipefail
+          cat > ci-projects.toml <<'TOML'
+          [defaults]
+          root = "."
+
+          [[project]]
+          repo = "."
+          name = "clocwork"
+
+          [[project]]
+          repo = "not-here"
+          TOML
+
+      - name: Count from that config
+        id: partial
+        uses: ./
+        with:
+          config: ci-projects.toml
+          out: config-out
+          format: txt
+          args: |
+            --basename
+            counted
+
+      - name: Skipped projects are a warning, not a dead run
+        env:
+          SKIPPED: ${{ steps.partial.outputs.skipped }}
+        run: |
+          set -euo pipefail
+          test "$SKIPPED" = "true"
+          # args reached the command, or this file would be cw-report.txt.
+          test -f config-out/cw-counted.txt
+          grep -F 'not-here' config-out/cw-counted.txt
