@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-label="Every project: Lines of code by project: 601 002 across 17 projects">
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-label="Every project: Lines of code by project: 602 818 across 17 projects">
 <style>
     .bg { fill: #ffffff; stroke: #e3e6ea; }
     .title { fill: #6b7280; }
@@ -55,59 +55,59 @@
 <text x="72" y="206.5" class="figure" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="104.0" font-weight="700" text-anchor="start">Every project</text>
 <text x="72" y="249.5" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="27.0" font-weight="400" text-anchor="start">public and private together, the private ones masked</text>
 <text x="72" y="307.5" class="title" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="18.0" font-weight="600" text-anchor="start">LINES OF CODE</text>
-<text x="72" y="387.5" class="figure" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="68.0" font-weight="700" text-anchor="start">601 002</text>
-<text x="72" y="421.5" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">17 projects  ·  4 256 files  ·  42 languages</text>
-<path class="l0" d="M985.00 112.00A150.00 150.00 0 0 1 1134.99 264.11L1092.99 263.52A108.00 108.00 0 0 0 985.00 154.00Z" fill="#4743b1"/>
-<path class="l1" d="M1134.99 264.11A150.00 150.00 0 0 1 1072.50 383.84L1048.00 349.72A108.00 108.00 0 0 0 1092.99 263.52Z" fill="#b14e43"/>
-<path class="l2" d="M1072.50 383.84A150.00 150.00 0 0 1 942.94 405.98L954.72 365.67A108.00 108.00 0 0 0 1048.00 349.72Z" fill="#4368b1"/>
-<path class="l3" d="M942.94 405.98A150.00 150.00 0 0 1 858.17 342.08L893.68 319.66A108.00 108.00 0 0 0 954.72 365.67Z" fill="#3fa655"/>
-<path class="l4" d="M858.17 342.08A150.00 150.00 0 0 1 838.50 294.22L879.52 285.20A108.00 108.00 0 0 0 893.68 319.66Z" fill="#70a23d"/>
-<path class="l5" d="M838.50 294.22A150.00 150.00 0 0 1 835.74 247.12L877.53 251.29A108.00 108.00 0 0 0 879.52 285.20Z" fill="#4375b1"/>
-<path class="l6" d="M835.74 247.12A150.00 150.00 0 0 1 843.51 212.21L883.12 226.15A108.00 108.00 0 0 0 877.53 251.29Z" fill="#889b3b"/>
-<path class="l7" d="M843.51 212.21A150.00 150.00 0 0 1 857.43 183.09L893.15 205.18A108.00 108.00 0 0 0 883.12 226.15Z" fill="#b14356"/>
-<path class="l8" d="M857.43 183.09A150.00 150.00 0 0 1 877.03 157.87L907.26 187.03A108.00 108.00 0 0 0 893.15 205.18Z" fill="#a6953f"/>
-<path class="l9" d="M877.03 157.87A150.00 150.00 0 0 1 899.52 138.74L923.46 173.25A108.00 108.00 0 0 0 907.26 187.03Z" fill="#b1439f"/>
-<path class="l10" d="M899.52 138.74A150.00 150.00 0 0 1 925.02 124.51L941.82 163.01A108.00 108.00 0 0 0 923.46 173.25Z" fill="#7743b1"/>
-<path class="l11" d="M925.02 124.51A150.00 150.00 0 0 1 943.84 117.76L955.36 158.15A108.00 108.00 0 0 0 941.82 163.01Z" fill="#b1438f"/>
-<path class="l12" d="M943.84 117.76A150.00 150.00 0 0 1 956.89 114.66L964.76 155.91A108.00 108.00 0 0 0 955.36 158.15Z" fill="#5ba63f"/>
-<path class="l13" d="M956.89 114.66A150.00 150.00 0 0 1 969.15 112.84L973.59 154.60A108.00 108.00 0 0 0 964.76 155.91Z" fill="#409faa"/>
-<path class="l14" d="M969.15 112.84A150.00 150.00 0 0 1 976.91 112.22L979.18 154.16A108.00 108.00 0 0 0 973.59 154.60Z" fill="#51a63f"/>
-<path class="l15" d="M976.91 112.22A150.00 150.00 0 0 1 984.49 112.00L984.64 154.00A108.00 108.00 0 0 0 979.18 154.16Z" fill="#3da298"/>
-<text x="985" y="270" class="figure" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="46.0" font-weight="700" text-anchor="middle">601k</text>
+<text x="72" y="387.5" class="figure" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="68.0" font-weight="700" text-anchor="start">602 818</text>
+<text x="72" y="421.5" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">17 projects  ·  4 260 files  ·  42 languages</text>
+<path class="l0" d="M985.00 112.00A150.00 150.00 0 0 1 1134.99 263.39L1093.00 263.00A108.00 108.00 0 0 0 985.00 154.00Z" fill="#4743b1"/>
+<path class="l1" d="M1134.99 263.39A150.00 150.00 0 0 1 1072.22 384.03L1047.80 349.86A108.00 108.00 0 0 0 1093.00 263.00Z" fill="#b14e43"/>
+<path class="l2" d="M1072.22 384.03A150.00 150.00 0 0 1 943.01 406.00L954.77 365.68A108.00 108.00 0 0 0 1047.80 349.86Z" fill="#4368b1"/>
+<path class="l3" d="M943.01 406.00A150.00 150.00 0 0 1 858.38 342.42L893.84 319.91A108.00 108.00 0 0 0 954.77 365.68Z" fill="#3fa655"/>
+<path class="l4" d="M858.38 342.42A150.00 150.00 0 0 1 838.62 294.77L879.61 285.59A108.00 108.00 0 0 0 893.84 319.91Z" fill="#70a23d"/>
+<path class="l5" d="M838.62 294.77A150.00 150.00 0 0 1 835.67 247.82L877.48 251.79A108.00 108.00 0 0 0 879.61 285.59Z" fill="#4375b1"/>
+<path class="l6" d="M835.67 247.82A150.00 150.00 0 0 1 843.24 212.97L882.93 226.70A108.00 108.00 0 0 0 877.48 251.79Z" fill="#889b3b"/>
+<path class="l7" d="M843.24 212.97A150.00 150.00 0 0 1 856.96 183.86L892.81 205.74A108.00 108.00 0 0 0 882.93 226.70Z" fill="#b14356"/>
+<path class="l8" d="M856.96 183.86A150.00 150.00 0 0 1 876.33 158.60L906.76 187.55A108.00 108.00 0 0 0 892.81 205.74Z" fill="#a6953f"/>
+<path class="l9" d="M876.33 158.60A150.00 150.00 0 0 1 898.63 139.36L922.81 173.70A108.00 108.00 0 0 0 906.76 187.55Z" fill="#b1439f"/>
+<path class="l10" d="M898.63 139.36A150.00 150.00 0 0 1 923.94 124.99L941.04 163.35A108.00 108.00 0 0 0 922.81 173.70Z" fill="#7743b1"/>
+<path class="l11" d="M923.94 124.99A150.00 150.00 0 0 1 942.64 118.10L954.50 158.40A108.00 108.00 0 0 0 941.04 163.35Z" fill="#b1438f"/>
+<path class="l12" d="M942.64 118.10A150.00 150.00 0 0 1 956.98 114.64L964.82 155.90A108.00 108.00 0 0 0 954.50 158.40Z" fill="#5ba63f"/>
+<path class="l13" d="M956.98 114.64A150.00 150.00 0 0 1 969.20 112.83L973.62 154.60A108.00 108.00 0 0 0 964.82 155.90Z" fill="#409faa"/>
+<path class="l14" d="M969.20 112.83A150.00 150.00 0 0 1 976.93 112.22L979.19 154.16A108.00 108.00 0 0 0 973.62 154.60Z" fill="#51a63f"/>
+<path class="l15" d="M976.93 112.22A150.00 150.00 0 0 1 984.50 112.00L984.64 154.00A108.00 108.00 0 0 0 979.19 154.16Z" fill="#3da298"/>
+<text x="985" y="270" class="figure" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="46.0" font-weight="700" text-anchor="middle">603k</text>
 <text x="985" y="302" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="middle">lines</text>
 <rect class="track" fill="#eceff3" x="72" y="470" width="1136" height="20" rx="10.0"/>
 <clipPath id="barclip"><rect x="72" y="470" width="1136" height="20" rx="10.0"/></clipPath>
 <g id="bar" clip-path="url(#barclip)">
-<rect class="l0" x="72.00" y="470" width="286.54" height="20" fill="#4743b1"/>
-<rect class="l1" x="358.54" y="470" width="168.86" height="20" fill="#b14e43"/>
-<rect class="l2" x="527.40" y="470" width="163.99" height="20" fill="#4368b1"/>
-<rect class="l3" x="691.39" y="470" width="130.79" height="20" fill="#3fa655"/>
-<rect class="l4" x="822.18" y="470" width="62.68" height="20" fill="#70a23d"/>
-<rect class="l5" x="884.86" y="470" width="57.11" height="20" fill="#4375b1"/>
-<rect class="l6" x="941.97" y="470" width="43.21" height="20" fill="#889b3b"/>
-<rect class="l7" x="985.18" y="470" width="38.98" height="20" fill="#b14356"/>
-<rect class="l8" x="1024.16" y="470" width="38.56" height="20" fill="#a6953f"/>
-<rect class="l9" x="1062.72" y="470" width="35.66" height="20" fill="#b1439f"/>
-<rect class="l10" x="1098.38" y="470" width="35.25" height="20" fill="#7743b1"/>
-<rect class="l11" x="1133.63" y="470" width="24.11" height="20" fill="#b1438f"/>
-<rect class="l12" x="1157.74" y="470" width="16.18" height="20" fill="#5ba63f"/>
-<rect class="l13" x="1173.92" y="470" width="14.94" height="20" fill="#409faa"/>
-<rect class="l14" x="1188.86" y="470" width="9.38" height="20" fill="#51a63f"/>
-<rect class="l15" x="1198.24" y="470" width="9.14" height="20" fill="#3da298"/>
+<rect class="l0" x="72.00" y="470" width="285.67" height="20" fill="#4743b1"/>
+<rect class="l1" x="357.67" y="470" width="170.13" height="20" fill="#b14e43"/>
+<rect class="l2" x="527.80" y="470" width="163.49" height="20" fill="#4368b1"/>
+<rect class="l3" x="691.30" y="470" width="130.39" height="20" fill="#3fa655"/>
+<rect class="l4" x="821.69" y="470" width="62.49" height="20" fill="#70a23d"/>
+<rect class="l5" x="884.18" y="470" width="56.94" height="20" fill="#4375b1"/>
+<rect class="l6" x="941.12" y="470" width="43.08" height="20" fill="#889b3b"/>
+<rect class="l7" x="984.20" y="470" width="38.86" height="20" fill="#b14356"/>
+<rect class="l8" x="1023.06" y="470" width="38.45" height="20" fill="#a6953f"/>
+<rect class="l9" x="1061.51" y="470" width="35.55" height="20" fill="#b1439f"/>
+<rect class="l10" x="1097.06" y="470" width="35.14" height="20" fill="#7743b1"/>
+<rect class="l11" x="1132.20" y="470" width="24.04" height="20" fill="#b1438f"/>
+<rect class="l12" x="1156.24" y="470" width="17.78" height="20" fill="#5ba63f"/>
+<rect class="l13" x="1174.02" y="470" width="14.90" height="20" fill="#409faa"/>
+<rect class="l14" x="1188.92" y="470" width="9.36" height="20" fill="#51a63f"/>
+<rect class="l15" x="1198.27" y="470" width="9.12" height="20" fill="#3da298"/>
 <rect class="l16" x="1207.39" y="470" width="0.61" height="20" fill="#b18743"/>
 </g>
 <circle class="l0" cx="78" cy="514" r="6" fill="#4743b1"/>
 <text x="90" y="520" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="500" text-anchor="start">UNDISCLOSED</text>
-<text x="242.8" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">25.2%</text>
-<circle class="l1" cx="334.8" cy="514" r="6" fill="#b14e43"/>
-<text x="346.8" y="520" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="500" text-anchor="start">DUD</text>
-<text x="394.8" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">14.9%</text>
-<circle class="l2" cx="482.2" cy="514" r="6" fill="#4368b1"/>
-<text x="494.2" y="520" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="500" text-anchor="start">RetroFlops</text>
-<text x="609" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">14.4%</text>
-<circle class="l3" cx="696.4" cy="514" r="6" fill="#3fa655"/>
-<text x="708.4" y="520" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="500" text-anchor="start">Magic Link SSO</text>
-<text x="870.2" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">11.5%</text>
-<text x="947" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">+13 more</text>
-<text x="72" y="590" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="18.0" font-weight="400" text-anchor="start">clocwork · cloc · 2026-09-09</text>
+<text x="242.8" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">25.1%</text>
+<circle class="l1" cx="330.2" cy="514" r="6" fill="#b14e43"/>
+<text x="342.2" y="520" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="500" text-anchor="start">DUD</text>
+<text x="390.2" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">15.0%</text>
+<circle class="l2" cx="477.6" cy="514" r="6" fill="#4368b1"/>
+<text x="489.6" y="520" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="500" text-anchor="start">RetroFlops</text>
+<text x="604.4" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">14.4%</text>
+<circle class="l3" cx="691.8" cy="514" r="6" fill="#3fa655"/>
+<text x="703.8" y="520" class="label" fill="#1c1e21" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="500" text-anchor="start">Magic Link SSO</text>
+<text x="865.6" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">11.5%</text>
+<text x="942.4" y="520" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="20.0" font-weight="400" text-anchor="start">+13 more</text>
+<text x="72" y="590" class="muted" fill="#6b7280" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="18.0" font-weight="400" text-anchor="start">clocwork · cloc · 2026-09-10</text>
 </svg>

@@ -1,15 +1,15 @@
 # Lines of code
 
-**601 002** lines of code across **17** projects and **4 256** files.
+**602 818** lines of code across **17** projects and **4 260** files.
 
-<sub>Generated 2026-09-09 21:33 UTC by [clocwork](https://github.com/wojciechpolak/clocwork) 0.9.1 with [cloc](https://github.com/AlDanial/cloc) 2.10</sub>
+<sub>Generated 2026-09-10 16:45 UTC by [clocwork](https://github.com/wojciechpolak/clocwork) 0.9.2 with [cloc](https://github.com/AlDanial/cloc) 2.10</sub>
 
 ## By project
 
 | Project | Files | Code | Comment | Blank | Share |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| UNDISCLOSED | 976 | 151 593 | 10 838 | 23 170 | 25.2% |
-| [DUD](https://github.com/wojciechpolak/dud) | 233 | 89 337 | 3 524 | 5 890 | 14.9% |
+| UNDISCLOSED | 976 | 151 593 | 10 838 | 23 170 | 25.1% |
+| [DUD](https://github.com/wojciechpolak/dud) | 233 | 90 278 | 3 535 | 5 955 | 15.0% |
 | [RetroFlops](https://github.com/retroflops/retroflops) | 1 521 | 86 758 | 5 594 | 5 696 | 14.4% |
 | [Magic Link SSO](https://github.com/magic-link-sso/magic-sso) | 458 | 69 193 | 6 718 | 11 368 | 11.5% |
 | [gLifestream](https://github.com/wojciechpolak/glifestream) | 205 | 33 161 | 2 106 | 4 456 | 5.5% |
@@ -20,25 +20,25 @@
 | [dproxy](https://github.com/wojciechpolak/dproxy) | 128 | 18 865 | 1 727 | 1 987 | 3.1% |
 | [Anubis](https://github.com/wojciechpolak/anubis) | 93 | 18 647 | 2 441 | 3 432 | 3.1% |
 | [YACT](https://github.com/wojciechpolak/yact) | 67 | 12 757 | 887 | 872 | 2.1% |
-| [clocwork](https://github.com/retroflops/clocwork) | 57 | 8 560 | 1 301 | 1 553 | 1.4% |
+| [clocwork](https://github.com/retroflops/clocwork) | 61 | 9 435 | 1 485 | 1 731 | 1.6% |
 | [wcomp](https://github.com/wojciechpolak/wcomp) | 49 | 7 905 | 925 | 1 465 | 1.3% |
 | [WebXiangpianpu](https://github.com/wojciechpolak/webxiangpianbu) | 61 | 4 965 | 639 | 940 | 0.8% |
 | [Daily Echoes](https://github.com/wojciechpolak/obsidian-daily-echoes) | 31 | 4 838 | 533 | 352 | 0.8% |
 | [vcstreak](https://github.com/wojciechpolak/vcstreak) | 2 | 323 | 17 | 70 | 0.1% |
-| **Total** | **4 256** | **601 002** | **46 198** | **69 413** | **100.0%** |
+| **Total** | **4 260** | **602 818** | **46 393** | **69 656** | **100.0%** |
 
 ## By language
 
 | Language | Files | Code | Comment | Blank | Share |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| TypeScript | 1 193 | 179 108 | 22 882 | 24 559 | 29.8% |
-| YAML | 1 404 | 95 177 | 455 | 10 473 | 15.8% |
-| JSON | 191 | 85 397 | 0 | 9 | 14.2% |
-| Go | 181 | 55 662 | 3 352 | 3 478 | 9.3% |
-| JavaScript | 134 | 32 114 | 2 138 | 3 121 | 5.3% |
-| Python | 287 | 31 276 | 5 154 | 6 639 | 5.2% |
+| TypeScript | 1 193 | 179 566 | 22 882 | 24 574 | 29.8% |
+| YAML | 1 406 | 95 522 | 532 | 10 515 | 15.8% |
+| JSON | 191 | 85 400 | 0 | 9 | 14.2% |
+| Go | 181 | 55 932 | 3 363 | 3 490 | 9.3% |
+| JavaScript | 134 | 32 130 | 2 138 | 3 121 | 5.3% |
+| Python | 288 | 31 641 | 5 258 | 6 742 | 5.2% |
 | C# | 105 | 18 480 | 438 | 2 116 | 3.1% |
-| Markdown | 129 | 17 486 | 10 | 4 874 | 2.9% |
+| Markdown | 130 | 17 846 | 10 | 4 945 | 3.0% |
 | C | 68 | 17 383 | 1 709 | 3 251 | 2.9% |
 | SCSS | 24 | 11 969 | 206 | 723 | 2.0% |
 | CSS | 29 | 9 385 | 840 | 1 363 | 1.6% |
@@ -49,18 +49,18 @@
 | HTML | 48 | 3 348 | 1 | 226 | 0.6% |
 | Astro | 26 | 3 123 | 346 | 304 | 0.5% |
 | Bourne Shell | 59 | 2 944 | 715 | 505 | 0.5% |
-| SVG | 43 | 1 987 | 64 | 39 | 0.3% |
+| SVG | 43 | 1 984 | 64 | 39 | 0.3% |
 | C/C++ Header | 24 | 1 850 | 488 | 489 | 0.3% |
 | XSLT | 3 | 1 306 | 42 | 60 | 0.2% |
 | lex | 7 | 1 012 | 122 | 196 | 0.2% |
-| TOML | 35 | 954 | 342 | 245 | 0.2% |
+| TOML | 35 | 955 | 345 | 245 | 0.2% |
 | Godot Scene | 24 | 906 | 0 | 219 | 0.2% |
 | m4 | 6 | 888 | 211 | 103 | 0.1% |
 | EJS | 3 | 817 | 0 | 78 | 0.1% |
 | XML | 25 | 655 | 0 | 6 | 0.1% |
 | make | 20 | 650 | 342 | 203 | 0.1% |
 | Dockerfile | 21 | 603 | 38 | 146 | 0.1% |
-| SQL | 13 | 587 | 88 | 35 | 0.1% |
+| SQL | 13 | 588 | 88 | 35 | 0.1% |
 | Scheme | 6 | 581 | 196 | 94 | 0.1% |
 | Text | 10 | 560 | 0 | 110 | 0.1% |
 | Lisp | 1 | 459 | 48 | 67 | 0.1% |
@@ -73,4 +73,4 @@
 | Visual Studio Solution | 1 | 43 | 1 | 0 | 0.0% |
 | sed | 1 | 11 | 0 | 0 | 0.0% |
 | Windows Resource File | 1 | 3 | 0 | 0 | 0.0% |
-| **Total** | **4 256** | **601 002** | **46 198** | **69 413** | **100.0%** |
+| **Total** | **4 260** | **602 818** | **46 393** | **69 656** | **100.0%** |

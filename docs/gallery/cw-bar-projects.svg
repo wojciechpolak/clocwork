@@ -23,22 +23,22 @@
 <rect class="neutral-track" fill="#8b929e" x="2" y="2" width="836" height="8" rx="4.0"/>
 <clipPath id="barclip"><rect x="2" y="2" width="836" height="8" rx="4.0"/></clipPath>
 <g id="bar" clip-path="url(#barclip)">
-<rect class="l0" x="2.00" y="2" width="210.87" height="8" fill="#5854be"/>
-<rect class="l1" x="212.87" y="2" width="124.27" height="8" fill="#b14e43"/>
-<rect class="l2" x="337.14" y="2" width="120.68" height="8" fill="#4368b1"/>
-<rect class="l3" x="457.82" y="2" width="96.25" height="8" fill="#3fa655"/>
-<rect class="l4" x="554.07" y="2" width="46.13" height="8" fill="#70a23d"/>
-<rect class="l5" x="600.19" y="2" width="42.03" height="8" fill="#4375b1"/>
-<rect class="l6" x="642.22" y="2" width="31.80" height="8" fill="#889b3b"/>
-<rect class="l7" x="674.02" y="2" width="28.69" height="8" fill="#b14356"/>
-<rect class="l8" x="702.71" y="2" width="28.38" height="8" fill="#a6953f"/>
-<rect class="l9" x="731.09" y="2" width="26.24" height="8" fill="#b1439f"/>
-<rect class="l10" x="757.33" y="2" width="25.94" height="8" fill="#7c46b8"/>
-<rect class="l11" x="783.27" y="2" width="17.75" height="8" fill="#b1438f"/>
-<rect class="l12" x="801.01" y="2" width="11.91" height="8" fill="#5ba63f"/>
-<rect class="l13" x="812.92" y="2" width="11.00" height="8" fill="#409faa"/>
-<rect class="l14" x="823.91" y="2" width="6.91" height="8" fill="#51a63f"/>
-<rect class="l15" x="830.82" y="2" width="6.73" height="8" fill="#3da298"/>
+<rect class="l0" x="2.00" y="2" width="210.23" height="8" fill="#5854be"/>
+<rect class="l1" x="212.23" y="2" width="125.20" height="8" fill="#b14e43"/>
+<rect class="l2" x="337.43" y="2" width="120.32" height="8" fill="#4368b1"/>
+<rect class="l3" x="457.75" y="2" width="95.96" height="8" fill="#3fa655"/>
+<rect class="l4" x="553.71" y="2" width="45.99" height="8" fill="#70a23d"/>
+<rect class="l5" x="599.70" y="2" width="41.90" height="8" fill="#4375b1"/>
+<rect class="l6" x="641.60" y="2" width="31.70" height="8" fill="#889b3b"/>
+<rect class="l7" x="673.30" y="2" width="28.60" height="8" fill="#b14356"/>
+<rect class="l8" x="701.90" y="2" width="28.29" height="8" fill="#a6953f"/>
+<rect class="l9" x="730.20" y="2" width="26.16" height="8" fill="#b1439f"/>
+<rect class="l10" x="756.36" y="2" width="25.86" height="8" fill="#7c46b8"/>
+<rect class="l11" x="782.22" y="2" width="17.69" height="8" fill="#b1438f"/>
+<rect class="l12" x="799.91" y="2" width="13.08" height="8" fill="#5ba63f"/>
+<rect class="l13" x="812.99" y="2" width="10.96" height="8" fill="#409faa"/>
+<rect class="l14" x="823.96" y="2" width="6.89" height="8" fill="#51a63f"/>
+<rect class="l15" x="830.84" y="2" width="6.71" height="8" fill="#3da298"/>
 </g>
-<text x="2" y="28" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">UNDISCLOSED 25%  ·  DUD 15%  ·  RetroFlops 14%  ·  Magic Link SSO 12%  ·  gLifestream 6%  ·  Time Tracker 5%  ·  Cheetah News 4%  ·  other 20%</text>
+<text x="2" y="28" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">UNDISCLOSED 25%  ·  DUD 15%  ·  RetroFlops 14%  ·  Magic Link SSO 11%  ·  gLifestream 6%  ·  Time Tracker 5%  ·  Cheetah News 4%  ·  other 20%</text>
 </svg>

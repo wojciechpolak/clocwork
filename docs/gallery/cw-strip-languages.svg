@@ -47,28 +47,28 @@
 </style>
 <circle class="l0" cx="6" cy="13" r="4" fill="#3178c6"/>
 <text x="16" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">TypeScript</text>
-<text x="87.28" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">179k  29.8%</text>
+<text x="87.28" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">180k  29.8%</text>
 <circle class="l1" cx="170.88" cy="13" r="4" fill="#cb171e"/>
 <text x="180.88" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">YAML</text>
-<text x="223.48" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">95.2k  15.8%</text>
+<text x="223.48" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">95.5k  15.8%</text>
 <circle class="l2" cx="310.82" cy="13" r="4" fill="#8a8a8a"/>
 <text x="320.82" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">JSON</text>
 <text x="360.42" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">85.4k  14.2%</text>
 <circle class="l3" cx="447.76" cy="13" r="4" fill="#00a1c9"/>
 <text x="457.76" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">Go</text>
-<text x="478.88" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">55.7k  9.3%</text>
+<text x="478.88" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">55.9k  9.3%</text>
 <circle class="l4" cx="562.48" cy="13" r="4" fill="#a4930e"/>
 <text x="572.48" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">JavaScript</text>
 <text x="643.76" y="17" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">32.1k  5.3%</text>
 <circle class="l5" cx="6" cy="35" r="4" fill="#3572a5"/>
 <text x="16" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">Python</text>
-<text x="61.36" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">31.3k  5.2%</text>
+<text x="61.36" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">31.6k  5.2%</text>
 <circle class="l6" cx="142.43" cy="35" r="4" fill="#178600"/>
 <text x="152.43" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">C#</text>
 <text x="173.55" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">18.5k  3.1%</text>
 <circle class="l7" cx="252.09" cy="35" r="4" fill="#0b56db"/>
 <text x="262.09" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">Markdown</text>
-<text x="331.21" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">17.5k  2.9%</text>
+<text x="331.21" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">17.8k  3.0%</text>
 <circle class="l8" cx="412.28" cy="35" r="4" fill="#626262"/>
 <text x="422.28" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="500" text-anchor="start">C</text>
 <text x="436.68" y="39" class="neutral" fill="#737a87" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start">17.4k  2.9%</text>
