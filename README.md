@@ -220,7 +220,7 @@ runner has not checked out is what the tool was built for, and it is one step,
 one repository per line:
 
 ```yaml
-- uses: actions/cache@v4
+- uses: actions/cache@v6
   with:
     path: .clocwork-cache
     key: clocwork-${{ github.run_id }}
@@ -263,7 +263,7 @@ the degenerate case of the same thing and needs `actions/checkout` in front of
 it:
 
 ```yaml
-- uses: actions/checkout@v5
+- uses: actions/checkout@v7
 - uses: wojciechpolak/clocwork@v0
   with:
     repos: .

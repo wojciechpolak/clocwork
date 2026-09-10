@@ -33,12 +33,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # Inside the workspace, the only place actions/cache can see. The key
       # follows the project list, so adding a repository starts a new cache.
       - name: Restore the clone cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .clocwork-cache
           key: clocwork-${{ hashFiles('projects.toml') }}
