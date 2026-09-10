@@ -14,10 +14,10 @@
 # `run:` body: inputs arrive through `env:`, which is the quoting fix and the
 # script-injection fix at once.
 
-name: clocwork
+name: clocwork lines of code
 description: >-
-  Count lines of code across one or several repositories with cloc and render
-  one report, as Markdown, HTML, plain text or an SVG card.
+  Count lines of code across one or more repositories with cloc, and render
+  one report as Markdown, HTML, text or SVG.
 author: Wojciech Polak
 
 branding:
