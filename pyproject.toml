@@ -5,7 +5,10 @@ readme = "README.md"
 requires-python = ">=3.11"
 authors = [{ name = "Wojciech Polak" }]
 license = "GPL-3.0-or-later"
-license-files = ["LICENSE"]
+# LICENSE is the GPL text and nothing else, so that GitHub identifies it;
+# the section 7 additional permission covering generated reports sits in
+# EXCEPTION.md, and both ship.
+license-files = ["LICENSE", "EXCEPTION.md"]
 dependencies = []
 dynamic = ["version"]
 

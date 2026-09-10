@@ -545,18 +545,18 @@ carry nothing, because they are meant to sit under other content.
 
 ## License
 
-GPL-3.0-or-later. See [LICENSE](LICENSE); every source file carries the
-matching SPDX header.
+GPL-3.0-or-later. See [LICENSE](LICENSE), which is the GPL text and nothing
+else; every source file carries the matching SPDX header.
 
 The reports it writes are not GPL. clocwork copies parts of itself into its
 output, since every SVG layout carries a stylesheet, the HTML report carries a
 larger one, and the signed formats carry a footer, and those files exist to be
 pasted into READMEs and web pages under whatever licence those carry. So
-[LICENSE](LICENSE) opens with an additional permission under section 7 of the
-GPL: the TXT, Markdown, HTML and SVG that clocwork generates may be used and
-distributed under terms of your choice, and the licence covering clocwork does
-not reach them. Embed `cw-card-languages.svg` in a proprietary repository
-without thinking about it.
+[EXCEPTION.md](EXCEPTION.md) grants an additional permission under section 7
+of the GPL: the TXT, Markdown, HTML and SVG that clocwork generates may be
+used and distributed under terms of your choice, and the licence covering
+clocwork does not reach them. Embed `cw-card-languages.svg` in a proprietary
+repository without thinking about it.
 
 That covers the ordinary case completely. Generate the HTML report, host it,
 restyle it, ship it in the documentation of something commercial, and the GPL

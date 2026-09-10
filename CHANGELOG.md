@@ -8,6 +8,14 @@ and this project follows
 
 ## [Unreleased]
 
+### Changed
+
+- `LICENSE` is now the GPL-3.0 text verbatim, and the section 7 additional
+  permission that puts generated reports outside the licence moved to
+  `EXCEPTION.md`. GitHub matches a licence file whole, so the notice that used
+  to open `LICENSE` cost the repository its licence label entirely. The terms
+  are unchanged, and both files ship in the wheel and the sdist.
+
 ## [0.9.2] - 2026-09-10
 
 ### Added

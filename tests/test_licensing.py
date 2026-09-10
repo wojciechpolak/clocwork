@@ -20,8 +20,9 @@ HEADER = (
 
 
 # The repository root is named rather than walked. It also holds README.md,
-# LICENSE and pyproject.toml, none of which takes a comment header, so adding a
-# file here has to be as deliberate as adding one to the root was.
+# LICENSE, EXCEPTION.md and pyproject.toml, none of which takes a comment
+# header, so adding a file here has to be as deliberate as adding one to the
+# root was.
 ROOT_FILES = ("action.yml",)
 
 
@@ -59,8 +60,25 @@ class TestLicensing(unittest.TestCase):
         with open(ROOT / "pyproject.toml", "rb") as handle:
             project = tomllib.load(handle)["project"]
         self.assertEqual(project["license"], EXPECTED)
-        self.assertEqual(project["license-files"], ["LICENSE"])
+        self.assertEqual(project["license-files"], ["LICENSE", "EXCEPTION.md"])
         self.assertTrue((ROOT / "LICENSE").is_file())
+        self.assertTrue((ROOT / "EXCEPTION.md").is_file())
+
+    def test_the_licence_file_holds_the_gpl_and_nothing_else(self):
+        """GitHub matches LICENSE against the licence texts it knows, whole.
+
+        A notice at the top is a few hundred words the GPL does not have, which
+        is enough to drop the match below the threshold, and the repository
+        then shows no licence at all. The section 7 additional permission
+        therefore lives in EXCEPTION.md, and this file stays verbatim.
+        """
+        licence = (ROOT / "LICENSE").read_text()
+        self.assertEqual(
+            licence.strip().splitlines()[0].strip(), "GNU GENERAL PUBLIC LICENSE"
+        )
+        exception = (ROOT / "EXCEPTION.md").read_text()
+        self.assertIn("section 7", exception)
+        self.assertNotIn("special exception", licence)
 
 
 if __name__ == "__main__":
