@@ -1,0 +1,266 @@
+# SPDX-FileCopyrightText: 2026 Wojciech Polak
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# This action wraps the tool. It does not re-implement any of it.
+#
+# clocwork has no third-party runtime dependencies, so the checkout the runner
+# already made of this repository is the whole installation: bin/clocwork puts
+# the repo root on sys.path and imports the package. There is no pip step, no
+# uv step and no PyPI.
+#
+# Two rules hold the run step together, and tests/test_action.py checks both.
+# Every flag reaches the command through `argv+=`, so a scan of those lines is
+# a complete list of what the action can pass. And no `${{ }}` appears inside a
+# `run:` body: inputs arrive through `env:`, which is the quoting fix and the
+# script-injection fix at once.
+
+name: clocwork
+description: >-
+  Count lines of code across one or several repositories with cloc and render
+  one report, as Markdown, HTML, plain text or an SVG card.
+author: Wojciech Polak
+
+branding:
+  icon: bar-chart-2
+  color: blue
+
+inputs:
+  repos:
+    description: >-
+      What to count, one directory or clone URL per line. Blank lines and
+      lines starting with # are ignored. Defaults to the checked-out
+      repository. Each line becomes a --repo, so no config file is read; set
+      `config` instead when you need per-project names, urls or exclusions.
+    required: false
+    default: "."
+  config:
+    description: >-
+      Path to a committed projects.toml, for anything --repo cannot say:
+      per-project name, url, branch, private, and the exclusions. Takes the
+      place of `repos`, not an addition to it.
+    required: false
+    default: ""
+  out:
+    description: Directory the report is written to, relative to the workspace.
+    required: false
+    default: out
+  cache:
+    description: >-
+      Where clones of remote repositories are kept. Point it inside the
+      workspace, since that is the only place actions/cache can see.
+    required: false
+    default: ""
+  format:
+    description: "Comma separated: txt, md, html, svg, or all."
+    required: false
+    default: ""
+  layout:
+    description: >-
+      SVG shapes, comma separated: card, strip, bar, bars, donut, banner, or
+      all. Each one writes its own file.
+    required: false
+    default: ""
+  by:
+    description: "What the SVG is drawn over: language, project, or all."
+    required: false
+    default: ""
+  svg-title:
+    description: Headline for the banner layout. The other five ignore it.
+    required: false
+    default: ""
+  svg-subtitle:
+    description: Line under the banner headline. The other five ignore it.
+    required: false
+    default: ""
+  args:
+    description: >-
+      Anything else to pass, one argument per line, so a value with spaces
+      needs no quoting. This is where --detail, --sort, --sections, --basename,
+      --svg-rows, --svg-width, --timeout, --no-fetch, --only and the visibility
+      flags go.
+    required: false
+    default: ""
+  install-cloc:
+    description: >-
+      Install cloc when it is not already on PATH. Set false to fail instead,
+      when the workflow installs it itself.
+    required: false
+    default: "true"
+  fail-on-skipped:
+    description: >-
+      Fail the step when some projects could not be counted. The report is
+      written either way; the default is to warn and carry on.
+    required: false
+    default: "false"
+
+outputs:
+  out-dir:
+    description: Absolute path of the directory the report was written to.
+    value: ${{ steps.run.outputs.out-dir }}
+  files:
+    description: The cw-* files that were written, one absolute path per line.
+    value: ${{ steps.run.outputs.files }}
+  skipped:
+    description: true when some projects could not be counted.
+    value: ${{ steps.run.outputs.skipped }}
+
+runs:
+  using: composite
+  steps:
+    - name: Find an interpreter and cloc
+      id: setup
+      shell: bash
+      env:
+        INPUT_INSTALL_CLOC: ${{ inputs.install-cloc }}
+      run: |
+        set -euo pipefail
+
+        # Refused here rather than three steps later. A Windows runner's bash
+        # is Git Bash: no sudo, no brew, and cloc would have to come from
+        # somewhere else entirely. Failing inside ensure_cloc() with advice to
+        # run `brew install cloc` would be worse than saying so now.
+        if [ "$RUNNER_OS" = "Windows" ]; then
+          echo "::error::the clocwork action runs on Linux and macOS runners; on Windows, run clocwork directly"
+          exit 1
+        fi
+
+        # Probed, not assumed. python3 on an ubuntu-22.04 runner is 3.10, and
+        # clocwork needs tomllib and datetime.UTC, both 3.11.
+        python=""
+        for candidate in python3.14 python3.13 python3.12 python3.11 python3 python; do
+          if command -v "$candidate" >/dev/null 2>&1 &&
+             "$candidate" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 11) else 1)'
+          then
+            python="$candidate"
+            break
+          fi
+        done
+        if [ -z "$python" ]; then
+          echo "::error::clocwork needs Python 3.11 or newer; add actions/setup-python before this step"
+          exit 1
+        fi
+        echo "using $("$python" --version)"
+
+        if command -v cloc >/dev/null 2>&1; then
+          echo "cloc is already here: $(cloc --version)"
+        elif [ "$INPUT_INSTALL_CLOC" != "true" ]; then
+          echo "::error::cloc is not on PATH and install-cloc is false"
+          exit 1
+        else
+          case "$RUNNER_OS" in
+            Linux)
+              sudo apt-get update -qq
+              sudo apt-get install -y --no-install-recommends cloc
+              ;;
+            macOS)
+              brew install cloc
+              ;;
+            *)
+              echo "::error::no way to install cloc on $RUNNER_OS"
+              exit 1
+              ;;
+          esac
+        fi
+
+        # A step output rather than $GITHUB_ENV, which would leak a variable
+        # into the caller's job.
+        echo "python=$python" >> "$GITHUB_OUTPUT"
+
+    - name: Count
+      id: run
+      shell: bash
+      env:
+        INPUT_REPOS: ${{ inputs.repos }}
+        INPUT_CONFIG: ${{ inputs.config }}
+        INPUT_OUT: ${{ inputs.out }}
+        INPUT_CACHE: ${{ inputs.cache }}
+        INPUT_FORMAT: ${{ inputs.format }}
+        INPUT_LAYOUT: ${{ inputs.layout }}
+        INPUT_BY: ${{ inputs.by }}
+        INPUT_SVG_TITLE: ${{ inputs.svg-title }}
+        INPUT_SVG_SUBTITLE: ${{ inputs.svg-subtitle }}
+        INPUT_ARGS: ${{ inputs.args }}
+        INPUT_FAIL_ON_SKIPPED: ${{ inputs.fail-on-skipped }}
+        CLOCWORK_PYTHON: ${{ steps.setup.outputs.python }}
+      run: |
+        set -euo pipefail
+
+        if [ -n "$INPUT_CONFIG" ] && [ -n "$INPUT_REPOS" ] && [ "$INPUT_REPOS" != "." ]; then
+          echo "::error::set either repos or config, not both"
+          exit 1
+        fi
+
+        # --out goes on first, so the array is never empty. "${argv[@]}" on an
+        # empty array under `set -u` is an unbound variable on bash 3.2, which
+        # is what /bin/bash still is on a macOS runner.
+        argv=(--out "$INPUT_OUT")
+
+        if [ -n "$INPUT_CONFIG" ]; then
+          argv+=(--config "$INPUT_CONFIG")
+        else
+          # A here-string, not a pipe, so the loop runs in this shell and the
+          # array survives it.
+          while IFS= read -r repo; do
+            case "$repo" in ""|"#"*) continue ;; esac
+            argv+=(--repo "$repo")
+          done <<< "$INPUT_REPOS"
+        fi
+
+        # An empty input passes nothing, so every default stays the CLI's to
+        # choose and a changed default needs no edit here.
+        if [ -n "$INPUT_CACHE" ]; then argv+=(--cache "$INPUT_CACHE"); fi
+        if [ -n "$INPUT_FORMAT" ]; then argv+=(--format "$INPUT_FORMAT"); fi
+        if [ -n "$INPUT_LAYOUT" ]; then argv+=(--layout "$INPUT_LAYOUT"); fi
+        if [ -n "$INPUT_BY" ]; then argv+=(--by "$INPUT_BY"); fi
+        if [ -n "$INPUT_SVG_TITLE" ]; then argv+=(--svg-title "$INPUT_SVG_TITLE"); fi
+        if [ -n "$INPUT_SVG_SUBTITLE" ]; then argv+=(--svg-subtitle "$INPUT_SVG_SUBTITLE"); fi
+
+        while IFS= read -r extra; do
+          case "$extra" in ""|"#"*) continue ;; esac
+          argv+=("$extra")
+        done <<< "$INPUT_ARGS"
+
+        printf 'clocwork'; printf ' %q' "${argv[@]}"; printf '\n'
+
+        status=0
+        "$CLOCWORK_PYTHON" "$GITHUB_ACTION_PATH/bin/clocwork" "${argv[@]}" || status=$?
+
+        # The filesystem is asked what was written, because stdout carries the
+        # whole text report on a run without --stdout. Anything added here that
+        # reads the command's output has to pass --quiet first, or it will be
+        # reading the report.
+        out_dir="$INPUT_OUT"
+        if [ -d "$out_dir" ]; then out_dir="$(cd "$out_dir" && pwd)"; fi
+
+        skipped=false
+        case "$status" in
+          0) ;;
+          1)
+            # Files were written. Failures never abort a clocwork run, and a
+            # workflow that publishes a card should publish the card it got.
+            skipped=true
+            if [ "$INPUT_FAIL_ON_SKIPPED" = "true" ]; then
+              echo "::error::some projects were skipped and fail-on-skipped is true"
+            else
+              echo "::warning::some projects were skipped; the report was still written"
+              status=0
+            fi
+            ;;
+          *)
+            echo "::error::clocwork exited $status"
+            ;;
+        esac
+
+        # Written before the exit, so a caller using continue-on-error can
+        # still read them.
+        {
+          echo "out-dir=$out_dir"
+          echo "skipped=$skipped"
+          echo "files<<CLOCWORK_EOF"
+          if [ -d "$out_dir" ]; then
+            find "$out_dir" -maxdepth 1 -type f -name 'cw-*' | sort
+          fi
+          echo "CLOCWORK_EOF"
+        } >> "$GITHUB_OUTPUT"
+
+        exit "$status"

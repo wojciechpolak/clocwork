@@ -926,6 +926,103 @@ class TestRemoteProjects(unittest.TestCase):
         self.assertNotIn("counting hello-world", err)
 
 
+class TestRepoFlag(unittest.TestCase):
+    """--repo counts what it names and opens no config file at all."""
+
+    REPO = "https://example.com/acme/hello-world.git"
+
+    def setUp(self):
+        self.tmp = Path(self.enterContext(tempfile.TemporaryDirectory())).resolve()
+        (self.tmp / "alpha").mkdir()
+        (self.tmp / "beta").mkdir()
+
+    def run_main(self, *argv, returncode=0):
+        """Run from inside the temp directory, so relative values resolve there."""
+        completed = subprocess.CompletedProcess(["cloc"], returncode, SAMPLE, "")
+        with (
+            mock.patch.object(collect.subprocess, "run", return_value=completed),
+            mock.patch.object(collect.shutil, "which", return_value="/bin/cloc"),
+            chdir(self.tmp),
+        ):
+            out, err = io.StringIO(), io.StringIO()
+            with redirect_stdout(out), redirect_stderr(err):
+                code = cli.main([*argv])
+        return code, out.getvalue(), err.getvalue()
+
+    def test_a_directory_needs_no_config_file(self):
+        code, _, _ = self.run_main("--repo", "alpha", "--quiet")
+        self.assertEqual(code, 0)
+        self.assertTrue((self.tmp / "out" / "cw-report.txt").is_file())
+
+    def test_no_config_file_is_read(self):
+        # Not "an empty config was read": a file that would fail to parse sits
+        # exactly where one would be looked for, and the run does not care.
+        (self.tmp / "projects.toml").write_text("this is not toml at all\n")
+        code, _, _ = self.run_main("--repo", "alpha", "--quiet")
+        self.assertEqual(code, 0)
+
+    def test_out_defaults_to_the_working_directory(self):
+        self.run_main("--repo", "alpha", "--quiet")
+        self.assertTrue((self.tmp / "out").is_dir())
+
+    def test_the_flag_repeats(self):
+        _, out, _ = self.run_main(
+            "--repo", "alpha", "--repo", "beta", "--stdout", "txt"
+        )
+        self.assertIn("alpha", out)
+        self.assertIn("beta", out)
+
+    def test_config_and_repo_together_are_refused(self):
+        (self.tmp / "projects.toml").write_text('[[project]]\nrepo = "alpha"\n')
+        with self.assertRaises(SystemExit) as raised:
+            self.run_main("--repo", "alpha", "--config", "projects.toml")
+        self.assertEqual(raised.exception.code, 2)
+
+    def test_a_bad_value_exits_two_and_names_the_flag(self):
+        # The = form, since argparse would otherwise read a leading - as a flag.
+        code, _, err = self.run_main("--repo=ext::sh -c whoami")
+        self.assertEqual(code, 2)
+        self.assertIn("--repo", err)
+        self.assertNotIn("[[project]]", err)
+
+    def test_a_remote_value_is_cloned_into_the_cache(self):
+        cache = self.tmp / "cache"
+        seen = []
+        with mock.patch.object(
+            collect, "sync", side_effect=lambda spec, **kw: seen.append(spec) or None
+        ):
+            self.run_main("--repo", self.REPO, "--cache", str(cache), "--quiet")
+        self.assertEqual(seen[0].repo, self.REPO)
+        self.assertEqual(seen[0].path.parent, cache)
+
+    def test_private_asks_for_something_that_cannot_exist(self):
+        code, _, err = self.run_main("--repo", "alpha", "--private", "--quiet")
+        self.assertEqual(code, 2)
+        self.assertIn("never private", err)
+
+    def test_the_other_visibility_flags_are_left_alone(self):
+        for flag in ("--all", "--mask", "--mask-each"):
+            with self.subTest(flag=flag):
+                code, _, _ = self.run_main("--repo", "alpha", flag, "--quiet")
+                self.assertEqual(code, 0)
+
+    def test_only_still_picks_one_of_several(self):
+        _, out, _ = self.run_main(
+            "--repo", "alpha", "--repo", "beta", "--only", "beta", "--stdout", "txt"
+        )
+        self.assertIn("beta", out)
+        self.assertNotIn("alpha", out)
+
+    def test_the_cli_table_of_a_local_config_never_applies(self):
+        # A [cli] table one directory away would change the formats written.
+        # No file is read, so it cannot.
+        (self.tmp / "projects.toml").write_text(
+            '[cli]\nformat = "md"\n\n[[project]]\nrepo = "alpha"\n'
+        )
+        self.run_main("--repo", "alpha", "--quiet")
+        self.assertIn("cw-report.txt", [p.name for p in (self.tmp / "out").iterdir()])
+
+
 class TestConfigCliTable(unittest.TestCase):
     """[cli] supplies defaults through main(); anything typed still wins."""
 

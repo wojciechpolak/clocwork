@@ -13,7 +13,7 @@ from pathlib import Path
 from . import __version__
 from . import render as render_pkg
 from .collect import ClocMissing, cloc_version, collect_all, ensure_cloc
-from .config import DEFAULT_CONFIG_NAME, ConfigError, ProjectSpec
+from .config import DEFAULT_CONFIG_NAME, ConfigError, ProjectSpec, from_repos
 from .config import load as load_config
 from .model import (
     DATE_PRECISIONS,
@@ -78,6 +78,8 @@ def build_parser() -> argparse.ArgumentParser:
         formatter_class=HelpFormatter,
         epilog="examples:\n"
         "  clocwork                        # all formats into out/\n"
+        "  clocwork --repo .               # this directory, with no config file\n"
+        "  clocwork --repo https://github.com/you/repo   # ...or clone one first\n"
         "  clocwork --stdout md            # Markdown to stdout, write nothing\n"
         "  clocwork --only aoc --detail    # one project, per-language breakdown\n"
         "  clocwork --sections language    # the language table on its own\n"
@@ -89,12 +91,24 @@ def build_parser() -> argparse.ArgumentParser:
         "  clocwork --mask                 # ...with the private ones anonymous\n"
         "  clocwork --mask-each            # ...anonymous but not merged together\n",
     )
-    parser.add_argument(
+    # --repo is the alternative to --config, not a modifier of it: given one,
+    # no config file is opened at all. Argparse says so itself rather than one
+    # of the two quietly winning, and the usage line then shows the choice.
+    source = parser.add_mutually_exclusive_group()
+    source.add_argument(
         "-c",
         "--config",
         default=str(default_config_path()),
         help=f"project list (default: {DEFAULT_CONFIG_NAME} here, "
         "else next to this tool)",
+    )
+    source.add_argument(
+        "--repo",
+        metavar="REPO",
+        action="append",
+        help="count this directory or clone URL and read no config file at "
+        "all; repeatable. Per-project settings need a config, and a remote "
+        "counted this way takes its default branch",
     )
     parser.add_argument(
         "-o",
@@ -513,14 +527,19 @@ def main(argv: list[str] | None = None, use_config_cli: bool = True) -> int:
 
     try:
         ensure_cloc()
-        config = load_config(args.config, cache=args.cache)
-        if use_config_cli and config.cli:
-            # The first pass was only ever for --config. Re-parse with the
-            # config's values as defaults. Argparse skips a default whenever
-            # the flag appears on the line, so the precedence rule needs no
-            # merge of its own.
-            parser.set_defaults(**config.cli)
-            args = parser.parse_args(argv)
+        if args.repo:
+            # No file, so no [cli] table, so nothing for a second pass to fold
+            # in. The shipped defaults stand.
+            config = from_repos(args.repo, cache=args.cache)
+        else:
+            config = load_config(args.config, cache=args.cache)
+            if use_config_cli and config.cli:
+                # The first pass was only ever for --config. Re-parse with the
+                # config's values as defaults. Argparse skips a default
+                # whenever the flag appears on the line, so the precedence rule
+                # needs no merge of its own.
+                parser.set_defaults(**config.cli)
+                args = parser.parse_args(argv)
         formats = resolve_formats(args.format)
         sections = resolve_sections(args.sections)
         layouts = resolve_layouts(args.layout)
@@ -537,6 +556,17 @@ def main(argv: list[str] | None = None, use_config_cli: bool = True) -> int:
         return 2
 
     visibility = resolve_visibility(args)
+    if args.repo and visibility == "private":
+        # The one visibility flag that can never succeed here. --all, --mask
+        # and --mask-each change nothing and are left alone; this one would
+        # otherwise land on "nothing to count; try --all", sending the reader
+        # after a flag that cannot help either.
+        print(
+            "clocwork: --repo projects are never private; "
+            "private is a config file key",
+            file=sys.stderr,
+        )
+        return 2
     specs, unmatched = filter_projects(config.projects, args.only, visibility)
     for name in unmatched:
         print(f"clocwork: no project matches --only {name!r}", file=sys.stderr)

@@ -11,10 +11,14 @@ line overrides.
 `repo` is either a directory on this machine or a URL git can clone. A URL is
 resolved here to the directory its clone will occupy, so `ProjectSpec.path` is a
 local path either way and nothing downstream has to ask which kind it was.
+
+`from_repos` builds the same Config from `--repo` values with no file involved,
+so a run needs a project list but not necessarily a place to keep one.
 """
 
 from __future__ import annotations
 
+import os
 import tomllib
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -82,6 +86,8 @@ _CLI_REFUSED = {
     "only": "visibility stays on the command line",
     "config": "the config file cannot choose which config file to read",
     "cache": "the cache directory is read before [cli] is",
+    "repo": "--repo is the mode that reads no config file, and this is one; "
+    "a config file lists its projects in [[project]]",
     "stdout": "printing one format instead of writing files is a mode, "
     "not a preference",
 }
@@ -186,14 +192,7 @@ def load(path: str | Path, cache: str | None = None) -> Config:
         for i, e in enumerate(entries, 1)
     ]
 
-    seen: dict[str, str] = {}
-    for project in projects:
-        if project.name in seen:
-            raise ConfigError(
-                f"duplicate project name {project.name!r} "
-                f"({seen[project.name]} and {project.path})"
-            )
-        seen[project.name] = str(project.path)
+    _reject_duplicate_names(projects)
 
     return Config(
         source=config_path,
@@ -202,6 +201,62 @@ def load(path: str | Path, cache: str | None = None) -> Config:
         cli=cli,
         cache=cache_root,
     )
+
+
+def from_repos(
+    values: list[str], cache: str | None = None, root: Path | None = None
+) -> Config:
+    """A Config with no file behind it: one project per --repo value.
+
+    --repo holds what a [[project]] repo key holds, so each value goes through
+    _build_project like any other. fetch.rejection refuses the same values,
+    fetch.cache_path picks the same clone directory, and two values naming one
+    project collide the same way. Nothing here counts as a second reading of
+    the schema.
+
+    No file is read, so there are no [defaults] to inherit and no [cli] table
+    to take flag defaults from, and the shipped defaults stand. `source` names
+    the file that would have been read, because its one reader is the --out
+    default and `out/` beside the config is the rule worth keeping.
+    """
+    base = Path.cwd() if root is None else Path(root)
+    cache_root = _cache_root(cache, None, base)
+
+    projects = []
+    for index, value in enumerate(values, 1):
+        text = value.strip()
+        if not text:
+            raise ConfigError("--repo: expected a directory or a clone URL, got ''")
+        projects.append(
+            _build_project(
+                {"repo": text},
+                index,
+                {},
+                base,
+                cache_root,
+                where=f"--repo {text!r}",
+            )
+        )
+
+    _reject_duplicate_names(projects)
+
+    return Config(
+        source=base / DEFAULT_CONFIG_NAME,
+        projects=projects,
+        cache=cache_root,
+    )
+
+
+def _reject_duplicate_names(projects: list[ProjectSpec]) -> None:
+    """Two projects under one name make a report nobody can read back."""
+    seen: dict[str, str] = {}
+    for project in projects:
+        if project.name in seen:
+            raise ConfigError(
+                f"duplicate project name {project.name!r} "
+                f"({seen[project.name]} and {project.path})"
+            )
+        seen[project.name] = str(project.path)
 
 
 def _cache_root(override: str | None, configured, config_dir: Path) -> Path:
@@ -275,10 +330,29 @@ def _cli_table(raw: dict, config_dir: Path) -> dict[str, object]:
     return values
 
 
+def _directory_name(path: Path) -> str:
+    """The directory's own name, even when the value written ends in '..'.
+
+    Path('/code/x/..').name is '..', which would put a project called '..' in
+    the report. normpath is lexical, so it drops the segment without following
+    symlinks and without touching the path cloc is handed. The fallback is the
+    one fetch.repo_name already uses, so both halves of default_name agree.
+    """
+    return Path(os.path.normpath(path)).name or "repo"
+
+
 def _build_project(
-    entry, index: int, defaults: dict, root: Path, cache: Path
+    entry,
+    index: int,
+    defaults: dict,
+    root: Path,
+    cache: Path,
+    where: str | None = None,
 ) -> ProjectSpec:
-    where = f"[[project]] #{index}"
+    # `where` names --repo when the value was typed rather than written down.
+    # Left unset it is the table it came from, and every message reads as it
+    # always did.
+    where = where or f"[[project]] #{index}"
     if not isinstance(entry, dict):
         raise ConfigError(f"{where}: must be a table")
     renamed = sorted(set(entry) & set(_PROJECT_RENAMED))
@@ -327,7 +401,7 @@ def _build_project(
         path = Path(raw_repo).expanduser()
         if not path.is_absolute():
             path = root / path
-        default_name = path.name
+        default_name = _directory_name(path)
 
     def setting(key: str) -> list[str]:
         value = entry.get(key, defaults.get(key, []))

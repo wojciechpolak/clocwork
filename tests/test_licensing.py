@@ -19,11 +19,17 @@ HEADER = (
 )
 
 
-def sources() -> list[Path]:
-    """Every file the wheel and the sdist carry, plus bin/ and scripts/.
+# The repository root is named rather than walked. It also holds README.md,
+# LICENSE and pyproject.toml, none of which takes a comment header, so adding a
+# file here has to be as deliberate as adding one to the root was.
+ROOT_FILES = ("action.yml",)
 
-    Those two are walked instead of named, so the next script added to either
-    is covered without anyone remembering to list it.
+
+def sources() -> list[Path]:
+    """Every file the wheel and the sdist carry, plus bin/, scripts/ and action.yml.
+
+    bin/ and scripts/ are walked instead of named, so the next script added to
+    either is covered without anyone remembering to list it.
     """
     found = [
         path
@@ -36,7 +42,7 @@ def sources() -> list[Path]:
         for path in sorted((ROOT / directory).iterdir())
         if path.is_file()
     ]
-    return [*found, *scripts]
+    return [*found, *scripts, *(ROOT / name for name in ROOT_FILES)]
 
 
 class TestLicensing(unittest.TestCase):

@@ -41,6 +41,7 @@ include = [
     "tests",
     "bin",
     "scripts",
+    "action.yml",
     "projects.example.toml",
     "README.md",
 ]

@@ -10,11 +10,44 @@ and this project follows
 
 ### Added
 
+- `--repo`, a repeatable flag holding what a `[[project]]` `repo` key holds: a
+  directory or a clone URL. Given one, no config file is read at all, so
+  `clocwork --repo .` counts the directory you are in and `clocwork --repo
+  https://github.com/you/repo` counts a repository you have not checked out,
+  neither of them needing a `projects.toml`. Per-project settings stay in the
+  file, so `name`, `url`, `private`, `branch`, `vcs` and the exclusions are
+  unavailable this way, and a remote counted like this takes its default
+  branch. `--out` defaults to `out/` in the working directory. `--repo` and
+  `--config` cannot be given together.
+
+- A GitHub Action at the repository root, so a workflow is one step:
+  `uses: wojciechpolak/clocwork@v0` with `repos: .`. It installs `cloc` and
+  runs the tool straight out of its own checkout, with no `pip install`,
+  because there is nothing to install. It reports `out-dir`, `files` and
+  `skipped`, forwards `--format`, `--layout`, `--by` and the two SVG headings,
+  and takes everything else through `args`, one argument per line. A project
+  that could not be counted is a warning and the report is still written;
+  `fail-on-skipped` makes it an error. Linux and macOS runners are supported,
+  and Windows is refused with a message. The action writes files and never
+  edits your README, so commit them with something like
+  `stefanzweifel/git-auto-commit-action`.
+
+- A floating `v0` tag, moved to each stable release by the release workflow, so
+  a workflow can follow the 0.x line instead of pinning every version. It
+  becomes `v1` when the version does, and a re-run of an older tag never walks
+  it backwards.
+
 - `--date {minute,day,month,none}` sets how precise the generated-at stamp is.
   It is the only thing left in the output that a rerun over unchanged code
   changes by itself, so `--date none` makes two runs write identical bytes and
   a scheduled job commits only when the code moved. The default is unchanged,
   and the key is settable in the config's `[cli]` table.
+
+### Fixed
+
+- A `repo` ending in `..` took its name from that segment, so
+  `repo = "../thing/.."` produced a project called `..`. The name now comes off
+  the normalised directory.
 
 ## [0.9.1] - 2026-09-09
 
