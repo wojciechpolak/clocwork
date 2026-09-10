@@ -8,6 +8,8 @@ and this project follows
 
 ## [Unreleased]
 
+## [0.9.2] - 2026-09-10
+
 ### Added
 
 - `--repo`, a repeatable flag holding what a `[[project]]` `repo` key holds: a

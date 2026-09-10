@@ -339,7 +339,7 @@ Without the action, the whole thing is three lines:
 ```yaml
 - run: |
     sudo apt-get install -y cloc
-    pip install https://github.com/wojciechpolak/clocwork/releases/download/v0.9.1/clocwork-0.9.1-py3-none-any.whl
+    pip install https://github.com/wojciechpolak/clocwork/releases/download/v0.9.2/clocwork-0.9.2-py3-none-any.whl
     clocwork --repo . --out out
 ```
 
