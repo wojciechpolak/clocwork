@@ -10,8 +10,11 @@ language, per project, and in total.
 
 Real output, from the author's own project list. The card above is the `bars`
 layout over languages, the band under it is `strip` over projects. Private
-projects are counted, then folded into one anonymous row. All six layouts,
-drawn both ways, are in the [gallery](docs/gallery.md).
+projects are counted, then folded into one anonymous row.
+
+> [!TIP]
+> The [gallery](docs/gallery.md) has all six layouts drawn both ways, plus the
+> three text formats. Fifteen files, one run.
 
 Output goes to `out/`, every file prefixed `cw-`:
 
@@ -321,7 +324,16 @@ them only when something moved. Copy it to `.github/workflows/clocwork.yml`,
 commit a `projects.toml` beside it, and embed the files it writes. It carries
 the two settings that decide whether the first run works, which are the
 repository's workflow permissions and the fact that a fresh `schedule` never
-fires until its first Monday.
+fires until it next comes due.
+
+> [!TIP]
+> One running in the open: [wojciechpolak](https://github.com/wojciechpolak)
+> counts seventeen repositories on the 1st of each month and commits the two
+> cards its profile README embeds. The
+> [workflow](https://github.com/wojciechpolak/wojciechpolak/blob/main/.github/workflows/clocwork.yml)
+> and the
+> [project list](https://github.com/wojciechpolak/wojciechpolak/blob/main/projects.toml)
+> are both there to read.
 
 The action reports `out-dir`, `files` (one absolute path per line) and
 `skipped`. A project that could not be counted is a warning and the report is
